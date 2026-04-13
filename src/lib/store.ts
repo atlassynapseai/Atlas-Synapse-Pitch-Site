@@ -18,7 +18,7 @@ type WorkspaceState = {
   disconnectAgent: (id: string) => void;
   /** Demo: reset disconnected agents */
   resetAgents: () => void;
-  /** Prefer selecting `disconnectedAgentIds` + `useMemo` — this returns a new array each call (not safe as a Zustand selector). */
+  /** Prefer selecting `disconnectedAgentIds` + `useMemo`. This returns a new array each call (not safe as a Zustand selector). */
   visibleAgents: () => AgentDefinition[];
 };
 

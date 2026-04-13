@@ -32,7 +32,7 @@ const steps = [
     color: "#A78BFA",
     label: "WE WATCH",
     title: "Every output gets reviewed",
-    body: "Our AI evaluates every agent response for accuracy. Catches the silent failures — wrong answers that look right.",
+    body: "Our AI evaluates every agent response for accuracy. Catches the silent failures: wrong answers that look right.",
     mockup: (
       <div className="space-y-1.5">
         {[
@@ -53,12 +53,12 @@ const steps = [
     color: "#F59E0B",
     label: "YOU SEE",
     title: "Plain English. Real ROI.",
-    body: "What happened, why it matters, and exactly how much each agent saves — or costs — your business. No engineering degree needed.",
+    body: "What happened, why it matters, and exactly how much each agent saves or costs your business. No engineering degree needed.",
     mockup: (
       <div className="space-y-2">
         <div className="rounded-xl border border-[#F87171]/20 bg-[#F87171]/5 p-3">
           <p className="text-[10px] font-bold text-[#F87171]">⚠ Scheduling Assistant</p>
-          <p className="mt-1 text-[12px] leading-relaxed text-[#E8D5F5]/70">Double-booked a client — misread timezone. Mountain vs Eastern.</p>
+          <p className="mt-1 text-[12px] leading-relaxed text-[#E8D5F5]/70">Double-booked a client: misread timezone. Mountain vs Eastern.</p>
         </div>
         <div className="rounded-xl border border-[#F59E0B]/20 bg-[#F59E0B]/5 p-3">
           <p className="text-[10px] font-bold text-[#F59E0B]">$ ROI This Month</p>

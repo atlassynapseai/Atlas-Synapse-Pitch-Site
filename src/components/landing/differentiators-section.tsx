@@ -65,7 +65,7 @@ function DashboardLeft() {
   return (
     <div className="rounded-xl bg-[#080615] p-3">
       <div className="mb-2 flex items-center justify-between">
-        <span className="text-[10px] font-bold uppercase tracking-wider text-[#E8D5F5]/30">Fleet Cost Analytics — All Agents</span>
+        <span className="text-[10px] font-bold uppercase tracking-wider text-[#E8D5F5]/30">Fleet Cost Analytics · All Agents</span>
         <span className="rounded bg-[#818CF8]/10 px-1.5 py-0.5 text-[8px] font-bold text-[#818CF8]/50">LIVE</span>
       </div>
       <div className="space-y-1 font-mono text-[11px] text-[#E8D5F5]/35">
@@ -108,7 +108,7 @@ function SlackLeft() {
           <span className="text-[9px] text-[#E8D5F5]/20">2:14 PM</span>
         </div>
         <div className="space-y-0.5 text-[10px] leading-[1.5] text-[#E8D5F5]/35">
-          <p className="font-semibold text-[#FBBF24]/60">⚠ P3 — Hallucination detected</p>
+          <p className="font-semibold text-[#FBBF24]/60">⚠ P3: Hallucination detected</p>
           <p>Agent: <span className="text-[#E8D5F5]/45">legal_research_v2</span></p>
           <p>Type: <span className="text-[#E8D5F5]/45">ungrounded_citation</span></p>
           <p>Assigned: <span className="text-[#E8D5F5]/45">backlog</span></p>
@@ -169,26 +169,26 @@ interface Comparison {
 const comparisons: Comparison[] = [
   {
     title: "PLAIN-ENGLISH TRANSLATION",
-    paneColor: "rgba(129,140,248,0.08)",
-    borderColor: "rgba(129,140,248,0.2)",
+    paneColor: "rgba(129,140,248,0.1)",
+    borderColor: "rgba(129,140,248,0.28)",
     leftType: "json",
-    us: "Your intake bot told a customer the return window is 60 days. Your actual policy says 30. Flagged as critical — wrong information sent to a live customer.",
+    us: "Your intake bot told a customer the return window is 60 days. Your actual policy says 30. Flagged as critical: wrong information sent to a live customer.",
     context: "Same data. One is for engineers. One is for you.",
   },
   {
     title: "BUSINESS ROI, NOT TOKEN COSTS",
-    paneColor: "rgba(245,158,11,0.06)",
-    borderColor: "rgba(245,158,11,0.15)",
+    paneColor: "rgba(245,158,11,0.08)",
+    borderColor: "rgba(245,158,11,0.22)",
     leftType: "dashboard",
-    us: "You're spending $1,847/mo on 5 agents. Your scheduling assistant ($286/mo) saves you $2,289 — great ROI. But your legal research agent ($421/mo) caused $560 in error corrections — it's costing more than it's worth.",
+    us: "You're spending $1,847/mo on 5 agents. Your scheduling assistant ($286/mo) saves you $2,289 (great ROI). But your legal research agent ($421/mo) caused $560 in error corrections, and it's costing more than it's worth.",
     context: "Token counts don't pay the bills. ROI does.",
   },
   {
     title: "SILENT FAILURE DETECTION",
-    paneColor: "rgba(248,113,113,0.06)",
-    borderColor: "rgba(248,113,113,0.15)",
+    paneColor: "rgba(248,113,113,0.08)",
+    borderColor: "rgba(248,113,113,0.22)",
     leftType: "slack",
-    us: 'Email to you at 2:15pm: "Your legal research agent cited a court case that doesn\'t exist — Williams v. State (2021). Flagged as critical. The client received this 4 minutes ago."',
+    us: 'Email to you at 2:15pm: "Your legal research agent cited a court case that doesn\'t exist: Williams v. State (2021). Flagged as critical. The client received this 4 minutes ago."',
     context: "You find out in seconds. Not sprints.",
   },
 ];
@@ -223,10 +223,10 @@ function ComparisonPanel({ comp }: { comp: Comparison }) {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, ease: E, delay: 0.1 }}
-            className="rounded-xl border-l-[3px] border-l-[#F59E0B]/50 bg-[#2D1B69]/35 p-3"
+            className="rounded-xl border-l-[3px] border-l-[#F59E0B]/55 bg-[#1B1464]/45 p-3 ring-1 ring-white/[0.06]"
           >
             <WordReveal text={comp.us} active={inView} />
-            <p className="mt-2 text-[11px] font-semibold text-[#F59E0B]/60">{comp.context}</p>
+            <p className="mt-2 text-[11px] font-semibold text-[#F59E0B]/75">{comp.context}</p>
           </motion.div>
         </div>
       </div>
@@ -240,10 +240,10 @@ export function DifferentiatorsSection() {
   return (
     <section className="relative" style={{ background: LANDING.differentiators.gradient }}>
       <svg className="pointer-events-none absolute inset-0 h-full w-full" aria-hidden="true">
-        <polygon points="0,0 350,30 280,350 0,320" fill="rgba(232,213,245,0.06)" stroke="rgba(232,213,245,0.09)" strokeWidth="1.5" />
-        <polygon points="800,50 1300,0 1440,300 900,350" fill="rgba(129,140,248,0.05)" stroke="rgba(129,140,248,0.08)" strokeWidth="1.5" />
-        <polygon points="400,300 750,250 850,550 350,580" fill="rgba(167,139,250,0.04)" stroke="rgba(167,139,250,0.07)" strokeWidth="1" />
-        <polygon points="1050,350 1440,300 1440,600 1000,580" fill="rgba(245,158,11,0.03)" stroke="rgba(245,158,11,0.05)" strokeWidth="1" />
+        <polygon points="0,0 350,30 280,350 0,320" fill="rgba(232,213,245,0.05)" stroke="rgba(232,213,245,0.09)" strokeWidth="1.5" />
+        <polygon points="800,50 1300,0 1440,300 900,350" fill="rgba(129,140,248,0.06)" stroke="rgba(129,140,248,0.1)" strokeWidth="1.5" />
+        <polygon points="400,300 750,250 850,550 350,580" fill="rgba(167,139,250,0.04)" stroke="rgba(167,139,250,0.08)" strokeWidth="1" />
+        <polygon points="1050,350 1440,300 1440,600 1000,580" fill="rgba(245,158,11,0.04)" stroke="rgba(245,158,11,0.07)" strokeWidth="1" />
       </svg>
       <div className="relative z-10 mx-auto max-w-[1400px] px-5 py-10 md:px-10 lg:py-14">
         {/* Left-aligned heading */}
@@ -257,8 +257,8 @@ export function DifferentiatorsSection() {
           <h2 className="mt-2 text-[40px] font-extrabold tracking-[-0.02em] text-white md:text-[56px] lg:text-[64px]">
             Current tools? Built by <span className="text-[#F87171]">engineers</span>,<br />for <span className="text-[#F87171]">engineers</span>.
           </h2>
-          <p className="mt-3 max-w-[640px] text-[18px] leading-[1.6] text-[#E8D5F5]/55 md:text-[20px]">
-            We&apos;re <span className="font-bold text-[#F59E0B]">business owners</span> who built this for <span className="font-bold text-[#F59E0B]">business owners</span>. Every screen, every alert, every number — designed so you can <span className="font-bold text-white">act on it immediately</span>.
+          <p className="mt-3 max-w-[640px] text-[18px] leading-[1.6] text-[#E8D5F5]/60 md:text-[20px]">
+            We&apos;re <span className="font-bold text-[#F59E0B]">business owners</span> who built this for <span className="font-bold text-[#F59E0B]">business owners</span>. Every screen, every alert, and every number is designed so you can <span className="font-bold text-white">act on it immediately</span>.
           </p>
         </motion.div>
         <div className="mt-8 flex flex-col gap-3">

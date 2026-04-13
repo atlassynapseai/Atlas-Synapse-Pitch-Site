@@ -76,8 +76,8 @@ function TraceCard({ trace }: { trace: Trace }) {
           {trace.passed
             ? "Passed"
             : trace.severity === "critical"
-              ? "Failed — Critical"
-              : "Failed — Caution"}
+              ? "Failed (critical)"
+              : "Failed (caution)"}
         </Badge>
       </div>
       <p className="mt-2 text-sm leading-relaxed text-slate-800 dark:text-slate-100">

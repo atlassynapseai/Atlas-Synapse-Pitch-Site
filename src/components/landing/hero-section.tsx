@@ -20,7 +20,7 @@ export function HeroSection() {
       </svg>
 
       <div className="relative z-10 mx-auto flex min-h-screen max-w-[1400px] flex-col lg:flex-row lg:items-center lg:gap-6">
-        {/* Left — text */}
+        {/* Left: text */}
         <div className="flex flex-1 flex-col justify-center px-5 pt-16 md:px-10 lg:py-12 lg:pr-0">
           {/* Pill */}
           <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, ease: E, delay: 0.05 }}
@@ -41,10 +41,10 @@ export function HeroSection() {
           {/* Subline */}
           <motion.p initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, ease: E, delay: 0.26 }}
             className="mt-4 max-w-[520px] text-[17px] leading-[1.7] text-[#E8D5F5]/70 md:text-[18px]">
-            Atlas Synapse monitors your AI agents the way HR manages employees — <span className="font-bold text-[#F59E0B]">performance reviews</span>, <span className="font-bold text-[#F59E0B]">incident reports</span>, <span className="font-bold text-[#F59E0B]">ROI tracking</span>. Built for business owners, not engineers.
+            Atlas Synapse monitors your AI agents the way HR manages employees: <span className="font-bold text-[#F59E0B]">performance reviews</span>, <span className="font-bold text-[#F59E0B]">incident reports</span>, <span className="font-bold text-[#F59E0B]">ROI tracking</span>. Built for business owners, not engineers.
           </motion.p>
 
-          {/* CTAs — centered, color-coded to draw the eye */}
+          {/* CTAs: centered, color-coded to draw the eye */}
           <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, ease: E, delay: 0.34 }}
             className="mt-7 flex flex-wrap items-center gap-3">
             <MagneticButton href="#waitlist"
@@ -68,7 +68,7 @@ export function HeroSection() {
           </motion.div>
         </div>
 
-        {/* Right — floating contrast cards */}
+        {/* Right: floating contrast cards */}
         <div className="flex flex-1 items-center justify-center px-5 pb-10 pt-6 md:px-10 lg:pb-0 lg:pt-0">
           <HeroIllustration />
         </div>

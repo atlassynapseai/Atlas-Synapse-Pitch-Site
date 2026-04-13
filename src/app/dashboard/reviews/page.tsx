@@ -54,7 +54,7 @@ function ReviewReport({ review, onClose }: { review: PerformanceReview; onClose:
             variant="outline"
             size="sm"
             onClick={() => {
-              toast.success("PDF downloaded (demo only — no actual file created).");
+              toast.success("PDF downloaded (demo only; no actual file created).");
             }}
           >
             <Download className="mr-2 h-4 w-4" />
@@ -202,7 +202,7 @@ export default function ReviewsPage() {
                 Performance reviews
               </h1>
               <p className="mt-1 text-sm text-slate-600 dark:text-slate-400">
-                Weekly HR-style reports — one per agent. See what each agent did, how well, what
+                Weekly HR-style reports, one per agent. See what each agent did, how well, what
                 went wrong, and whether it&apos;s improving.
               </p>
             </div>

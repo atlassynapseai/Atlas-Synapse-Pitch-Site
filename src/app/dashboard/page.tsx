@@ -13,7 +13,7 @@ import { Button } from "@/components/ui/button";
 
 export default function DashboardPage() {
   const ready = useFakeLoading(440);
-  /** Do not select `visibleAgents()` — it returns a new array every time and triggers an infinite re-render loop. */
+  /** Do not select `visibleAgents()`: it returns a new array every time and triggers an infinite re-render loop. */
   const disconnectedAgentIds = useAppStore((s) => s.disconnectedAgentIds);
   const agents = React.useMemo(
     () => agentsSeed.filter((a) => !disconnectedAgentIds.includes(a.id)),
@@ -26,7 +26,7 @@ export default function DashboardPage() {
         <div>
           <h1 className="text-2xl font-semibold tracking-tight text-[#1A3A5C] dark:text-slate-50">Agent overview</h1>
           <p className="mt-1 text-sm text-slate-600 dark:text-slate-400">
-            Live snapshot for BrightPath Legal — quality, incidents, and spend in one place.
+            Live snapshot for BrightPath Legal: quality, incidents, and spend in one place.
           </p>
         </div>
         <Button asChild className="bg-[#2E75B6] hover:bg-[#25649c]">

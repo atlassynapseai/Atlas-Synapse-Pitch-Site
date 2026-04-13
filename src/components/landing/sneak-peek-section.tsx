@@ -16,7 +16,7 @@ const agents = [
 ];
 
 const incidents = [
-  { severity: "critical" as const, text: "Hallucinated case citation — Williams v. State (2021)" },
+  { severity: "critical" as const, text: "Hallucinated case citation: Williams v. State (2021)" },
   { severity: "warning" as const, text: "Wrong statute of limitations quoted for NJ malpractice" },
   { severity: "critical" as const, text: "Fabricated 'Restatement (Fourth) of Federal Procedure'" },
 ];
@@ -195,27 +195,34 @@ export function SneakPeekSection() {
   const glowOpacity = useTransform(scrollYProgress, [0, 1], [0, 0.5]);
 
   return (
-    <section id="sneak-peek" ref={sectionRef} className="relative px-4 py-14 md:px-8 lg:py-16" style={{ background: LANDING.sneak.solid }}>
+    <section id="sneak-peek" ref={sectionRef} className="relative px-4 py-14 md:px-8 lg:py-16" style={{ background: LANDING.sneak.gradient }}>
+      <svg className="pointer-events-none absolute inset-0 h-full w-full" aria-hidden="true">
+        <polygon points="0,0 400,0 300,350 0,300" fill="rgba(99,102,241,0.07)" stroke="rgba(99,102,241,0.12)" strokeWidth="1.5" />
+        <polygon points="700,0 1200,50 1100,400 650,350" fill="rgba(129,140,248,0.06)" stroke="rgba(129,140,248,0.1)" strokeWidth="1.5" />
+        <polygon points="300,250 700,200 800,500 250,520" fill="rgba(45,27,105,0.04)" stroke="rgba(45,27,105,0.08)" strokeWidth="1" />
+        <polygon points="1000,200 1500,150 1440,500 950,480" fill="rgba(167,139,250,0.06)" stroke="rgba(129,140,248,0.1)" strokeWidth="1" />
+      </svg>
+
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.5, ease: EXPO_OUT }}
-        className="mx-auto mb-8 w-full max-w-[1400px] px-5 md:px-10"
+        className="relative z-10 mx-auto mb-8 w-full max-w-[1400px] px-5 md:px-10"
       >
-        <p className="text-[13px] font-extrabold uppercase tracking-[0.12em] text-[#F59E0B]">Product preview</p>
-        <h2 className="mt-2 text-[38px] font-extrabold tracking-[-0.02em] text-white md:text-[52px] lg:text-[58px]">
+        <p className="text-[13px] font-extrabold uppercase tracking-[0.12em] text-[#B45309]">Product preview</p>
+        <h2 className="mt-2 text-[38px] font-extrabold tracking-[-0.02em] text-[#1B1464] md:text-[52px] lg:text-[58px]">
           A look inside
         </h2>
-        <p className="mt-2 max-w-[520px] text-[18px] text-[#E8D5F5]/50 md:text-[20px]">
-          This is what managing your AI workforce looks like. <span className="font-bold text-white">Real data, real layout.</span>
+        <p className="mt-2 max-w-[520px] text-[18px] text-[#3D4A5C]/80 md:text-[20px]">
+          This is what managing your AI workforce looks like. <span className="font-bold text-[#1B1464]">Real data, real layout.</span>
         </p>
       </motion.div>
 
       {/* Main browser mockup */}
-      <div className="relative mx-auto mt-12 w-full max-w-[1000px] md:[perspective:1200px]">
-        <motion.div style={{ opacity: glowOpacity }} className="pointer-events-none absolute -inset-10 hidden rounded-3xl bg-accent/15 blur-[60px] md:block" />
-        <motion.div style={{ rotateY }} className="relative">
+      <div className="relative z-10 mx-auto mt-12 w-full max-w-[1000px] md:[perspective:1200px]">
+        <motion.div style={{ opacity: glowOpacity }} className="pointer-events-none absolute -inset-10 hidden rounded-3xl bg-[#6366f1]/14 blur-[60px] md:block" />
+        <motion.div style={{ rotateY }} className="relative drop-shadow-[0_24px_48px_rgba(27,20,100,0.18)]">
           <BrowserChrome url="app.atlassynapse.com/dashboard">
             <div className="mb-5 flex gap-2">
               {(["overview", "detail"] as const).map((t) => (
@@ -253,7 +260,7 @@ export function SneakPeekSection() {
       </div>
 
       {/* Two smaller frames */}
-      <div className="mx-auto mt-10 flex w-full max-w-[1000px] flex-col gap-[4%] md:flex-row">
+      <div className="relative z-10 mx-auto mt-10 flex w-full max-w-[1000px] flex-col gap-[4%] md:flex-row">
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}

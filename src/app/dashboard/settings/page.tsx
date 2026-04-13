@@ -278,7 +278,7 @@ export default function SettingsPage() {
             <p className="text-sm font-medium">What data we store</p>
             <p className="mt-1 text-sm leading-relaxed text-slate-600 dark:text-slate-300">
               Atlas Synapse captures agent activity traces in a structured, immutable log. Identity
-              markers — emails, phone numbers, SSNs, and card numbers — are stripped at the edge
+              markers (emails, phone numbers, SSNs, and card numbers) are stripped at the edge
               before data reaches our systems. Content (what was said, advised, or quoted) is
               preserved for evaluation. All data is encrypted at rest (AES-256) and in transit
               (TLS 1.3).
@@ -316,7 +316,7 @@ export default function SettingsPage() {
         </CardHeader>
         <CardContent>
           <div className="flex items-center gap-3">
-            <Badge variant="ai">Beta — Free</Badge>
+            <Badge variant="ai">Beta, free</Badge>
           </div>
           <p className="mt-3 text-sm leading-relaxed text-slate-600 dark:text-slate-300">
             You&apos;re on the founding member beta. When we launch paid plans, you&apos;ll get a

@@ -3,10 +3,10 @@ import { LANDING } from "@/lib/landing-palette";
 type FunkyWaveProps = {
   topBg: string;
   bottomFill: string;
-  /** Unique curve — keeps transitions lively without repeating the same silhouette */
+  /** Unique curve: keeps transitions lively without repeating the same silhouette */
   variant: 1 | 2 | 3 | 4 | 5;
   height?: number;
-  /** Line drawn along the fold — tuned per transition for visibility */
+  /** Line drawn along the fold, tuned per transition for visibility */
   scribbleStroke?: string;
 };
 
@@ -90,33 +90,33 @@ export function WaveLightToDark() {
   );
 }
 
-/** How (ink blue) → Sneak peek (slate-blue pane) */
+/** How (dark) → Product preview (light mist) */
 export function WaveHowToSneak() {
   return (
     <FunkyWave
       topBg={LANDING.how.solid}
-      bottomFill={LANDING.sneak.solid}
+      bottomFill={LANDING.sneak.edge}
       variant={1}
       height={76}
-      scribbleStroke="rgba(186, 230, 253, 0.12)"
+      scribbleStroke="rgba(186, 230, 253, 0.18)"
     />
   );
 }
 
-/** Sneak peek → Differentiators (plum-purple pane) */
+/** Product preview (light) → Why we’re different (dark) */
 export function WaveSneakToDifferentiators() {
   return (
     <FunkyWave
-      topBg={LANDING.sneak.solid}
+      topBg={LANDING.sneak.edge}
       bottomFill={LANDING.differentiators.edge}
       variant={2}
       height={82}
-      scribbleStroke="rgba(196, 181, 253, 0.14)"
+      scribbleStroke="rgba(27, 20, 100, 0.16)"
     />
   );
 }
 
-/** Differentiators → AI Management / HR orbit (warm wine-black pane) */
+/** Why we’re different (dark) → What we replace (light beige) */
 export function WaveDifferentiatorsToHrOrbit() {
   return (
     <FunkyWave
@@ -124,7 +124,7 @@ export function WaveDifferentiatorsToHrOrbit() {
       bottomFill={LANDING.hrOrbit.edge}
       variant={3}
       height={78}
-      scribbleStroke="rgba(252, 231, 243, 0.1)"
+      scribbleStroke="rgba(245, 240, 232, 0.35)"
     />
   );
 }

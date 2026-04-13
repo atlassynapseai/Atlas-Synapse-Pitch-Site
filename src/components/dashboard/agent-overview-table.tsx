@@ -29,7 +29,7 @@ function accuracyTone(pct: number) {
 
 export function AgentOverviewTable({ agents, loading }: { agents: AgentDefinition[]; loading: boolean }) {
   const router = useRouter();
-  /** Client-only anchor — `Date.now` runs in an effect, not during render (react-hooks/purity). */
+  /** Client-only anchor: `Date.now` runs in an effect, not during render (react-hooks/purity). */
   const [nowMs, setNowMs] = React.useState<number | null>(null);
   React.useLayoutEffect(() => {
     setNowMs(Date.now());

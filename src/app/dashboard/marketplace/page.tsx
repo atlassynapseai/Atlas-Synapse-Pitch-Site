@@ -67,7 +67,7 @@ export default function MarketplacePage() {
           </div>
           <p className="mt-1 text-sm text-slate-600 dark:text-slate-400">
             Browse pre-verified AI agents with performance scores, failure rates, and cost profiles
-            — before you deploy.
+            before you deploy.
           </p>
         </div>
       </div>

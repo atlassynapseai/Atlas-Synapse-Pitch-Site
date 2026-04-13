@@ -7,12 +7,12 @@ export type FailSpec = {
   severity: Severity;
 };
 
-/** Curated failure narratives — counts match agentsSeed failures per agent */
+/** Curated failure narratives; counts match agentsSeed failures per agent */
 export const FAILURE_LIBRARY: Record<string, FailSpec[]> = {
   [AGENT_IDS.intake]: [
     {
       summary:
-        "A prospective client asked whether BrightPath handles ERISA disability appeals against large insurers. The bot said we do not take ERISA appeals, which is incorrect — the firm regularly handles ERISA matters. The reply could have steered the caller to the benefits team instead of turning the case away.",
+        "A prospective client asked whether BrightPath handles ERISA disability appeals against large insurers. The bot said we do not take ERISA appeals, which is incorrect. The firm regularly handles ERISA matters. The reply could have steered the caller to the benefits team instead of turning the case away.",
       reason: "Incorrect information about practice areas.",
       severity: "warning",
     },
@@ -44,7 +44,7 @@ export const FAILURE_LIBRARY: Record<string, FailSpec[]> = {
     },
     {
       summary:
-        "For an asset purchase agreement, the bot invented a fictitious 'Section 4.8 — Environmental Indemnity' describing soil remediation obligations. No such section exists in the uploaded draft. This is a fabricated clause interpretation.",
+        "For an asset purchase agreement, the bot invented a fictitious 'Section 4.8: Environmental Indemnity' describing soil remediation obligations. No such section exists in the uploaded draft. This is a fabricated clause interpretation.",
       reason: "Hallucinated a contract section that does not exist.",
       severity: "critical",
     },
@@ -126,13 +126,13 @@ export const FAILURE_LIBRARY: Record<string, FailSpec[]> = {
     },
     {
       summary:
-        "For a question about Delaware fiduciary duties in M&A, the bot quoted 'Smith v. Jones, 1998 WL 1234567' as controlling — the citation appears fabricated and the proposition does not match known Delaware duty-of-care caselaw.",
+        "For a question about Delaware fiduciary duties in M&A, the bot quoted 'Smith v. Jones, 1998 WL 1234567' as controlling. The citation appears fabricated and the proposition does not match known Delaware duty-of-care caselaw.",
       reason: "Fabricated Westlaw-style citation.",
       severity: "critical",
     },
     {
       summary:
-        "The bot summarized the 'BrightPath exception' to the attorney-client privilege — a concept that does not exist — and suggested it applied to communications with a former GC now at a competitor.",
+        "The bot summarized the 'BrightPath exception' to the attorney-client privilege (a concept that does not exist) and suggested it applied to communications with a former GC now at a competitor.",
       reason: "Invented privilege exception terminology.",
       severity: "critical",
     },

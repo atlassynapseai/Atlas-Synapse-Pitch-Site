@@ -63,7 +63,7 @@ export default function IncidentsPage() {
             Incident feed
           </h1>
           <p className="mt-1 text-sm text-slate-600 dark:text-slate-400">
-            All flagged failures across every agent — {allIncidents.length} total.
+            All flagged failures across every agent ({allIncidents.length} total).
           </p>
         </div>
         <Button
@@ -186,7 +186,7 @@ export default function IncidentsPage() {
                               toast.success("Marked as reviewed.");
                             }}
                           >
-                            New — mark reviewed
+                            New: mark reviewed
                           </button>
                         )}
                       </TableCell>

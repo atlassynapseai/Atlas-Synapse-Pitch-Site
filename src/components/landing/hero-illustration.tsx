@@ -16,7 +16,7 @@ function Line({ icon, children }: { icon: string; children: React.ReactNode }) {
 export function HeroIllustration() {
   return (
     <div className="flex w-full max-w-[500px] flex-col gap-5">
-      {/* Top card — Managed (teal) */}
+      {/* Top card: Managed (teal) */}
       <motion.div
         initial={{ opacity: 0, y: 24, rotate: -1 }}
         animate={{ opacity: 1, y: 0, rotate: -1.5 }}
@@ -35,7 +35,7 @@ export function HeroIllustration() {
         </div>
       </motion.div>
 
-      {/* Bottom card — Unmanaged (orange) */}
+      {/* Bottom card: Unmanaged (orange) */}
       <motion.div
         initial={{ opacity: 0, y: 24, rotate: 1 }}
         animate={{ opacity: 1, y: 0, rotate: 1.5 }}

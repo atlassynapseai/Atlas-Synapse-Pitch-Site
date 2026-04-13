@@ -86,7 +86,7 @@ export function LandingHome() {
             The HR Department for Your AI
           </h1>
           <p className="mt-4 text-balance text-lg text-slate-600 dark:text-slate-300">
-            Monitor, evaluate, and manage your AI agents — in plain English. Know when they fail. Know if they&apos;re
+            Monitor, evaluate, and manage your AI agents in plain English. Know when they fail. Know if they&apos;re
             worth it.
           </p>
           <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
@@ -116,7 +116,7 @@ export function LandingHome() {
             <p className="text-xs font-medium uppercase tracking-wide text-slate-500">Business view</p>
             <p className="mt-2 text-2xl font-semibold text-[#1A3A5C] dark:text-white">Accuracy & cost</p>
             <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">
-              Quality, failures, and dollars — not internal engineering metrics.
+              Quality, failures, and dollars, not internal engineering metrics.
             </p>
           </div>
           <div className="rounded-xl border border-slate-200/80 bg-white p-4 text-left shadow-sm dark:border-slate-800 dark:bg-slate-950">
@@ -139,7 +139,7 @@ export function LandingHome() {
               {
                 stat: "95%",
                 cite: "MIT",
-                text: "of AI projects show zero measurable return — often because nobody is watching quality after launch.",
+                text: "of AI projects show zero measurable return, often because nobody is watching quality after launch.",
               },
               {
                 stat: "40%+",
@@ -149,7 +149,7 @@ export function LandingHome() {
               {
                 stat: "20+",
                 cite: "Industry",
-                text: "monitoring tools exist — almost all speak engineer. Owners still fly blind on reliability and ROI.",
+                text: "monitoring tools exist, but almost all speak engineer. Owners still fly blind on reliability and ROI.",
               },
             ].map((c) => (
               <motion.div key={c.stat} {...fade}>
@@ -175,7 +175,7 @@ export function LandingHome() {
             {
               step: "1",
               title: "Connect your agents",
-              body: "One guided step — we pull activity in read-only mode for the platforms you already use.",
+              body: "One guided step: we pull activity in read-only mode for the platforms you already use.",
               icon: Zap,
             },
             {
@@ -187,7 +187,7 @@ export function LandingHome() {
             {
               step: "3",
               title: "You see the truth plainly",
-              body: "Dashboards, savings, and weekly briefings written for owners — not buried in technical logs.",
+              body: "Dashboards, savings, and weekly briefings written for owners, not buried in technical logs.",
               icon: TrendingUp,
             },
           ].map((s) => (
@@ -213,7 +213,7 @@ export function LandingHome() {
               {
                 title: "Plain-English translation",
                 body: "Turn dense activity into short narratives anyone on the leadership team can understand and act on.",
-                mock: "“The assistant gave a wrong filing deadline — flagged as critical.”",
+                mock: "“The assistant gave a wrong filing deadline; flagged as critical.”",
               },
               {
                 title: "Business savings engine",
@@ -250,11 +250,11 @@ export function LandingHome() {
             Backed by CMU Swartz Center for Entrepreneurship
           </h2>
           <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">
-            Team roots across research and applied programs — including collaborations with CMU, Oxford, UW–Madison,
+            Team roots across research and applied programs, including collaborations with CMU, Oxford, UW-Madison,
             and UVA.
           </p>
           <div className="mt-8 flex flex-wrap items-center justify-center gap-8 opacity-80 grayscale">
-            {["CMU", "Oxford", "UW–Madison", "UVA"].map((uni) => (
+            {["CMU", "Oxford", "UW-Madison", "UVA"].map((uni) => (
               <span key={uni} className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">
                 {uni}
               </span>
@@ -269,7 +269,7 @@ export function LandingHome() {
             Join the beta waitlist
           </motion.h2>
           <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">
-            We&apos;re onboarding a small group of legal and professional services teams. No spam — one thoughtful note
+            We&apos;re onboarding a small group of legal and professional services teams. No spam: one thoughtful note
             when your slot opens.
           </p>
           <motion.form {...fade} onSubmit={onWaitlist} className="mt-8 flex flex-col gap-3 sm:flex-row">

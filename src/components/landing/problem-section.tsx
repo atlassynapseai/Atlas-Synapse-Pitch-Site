@@ -46,7 +46,7 @@ export function ProblemSection() {
         <div className="mt-8 grid gap-4 md:mt-10 md:grid-cols-3">
           <Stat target={95} suffix="%" label="of AI projects show zero measurable return after deployment" direction="left" delay={0} />
           <Stat target={40} suffix="%+" label="of agent-style AI initiatives expected to fail by 2027" direction="bottom" delay={0.12} />
-          <Stat target={20} suffix="+" label="monitoring tools exist — all built for engineers, none for business owners" direction="right" delay={0.24} />
+          <Stat target={20} suffix="+" label="monitoring tools exist, all built for engineers, none for business owners" direction="right" delay={0.24} />
         </div>
 
         <motion.p initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.4 }}

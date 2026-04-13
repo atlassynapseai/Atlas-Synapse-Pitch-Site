@@ -54,7 +54,7 @@ function buildAgentTraces(cfg: AgentGenConfig): Trace[] {
     throw new Error(`Failure library mismatch for ${cfg.id}`);
   }
 
-  /** Unique failure row indices — spaced across the trace list to avoid collisions */
+  /** Unique failure row indices, spaced across the trace list to avoid collisions */
   const sortedFailIdx: number[] = [];
   const failCount = failLib.length;
   const step = Math.max(1, Math.floor(cfg.total / (failCount + 1)));
@@ -152,7 +152,7 @@ export function getTraceById(id: string): Trace | undefined {
   return allTraces.find((t) => t.id === id);
 }
 
-/** Incidents for global feed — aligned to failed traces */
+/** Incidents for global feed, aligned to failed traces */
 export function buildIncidentsFromTraces(): Incident[] {
   const failed = allTraces.filter((t) => !t.passed);
   return failed.map((t, idx) => {

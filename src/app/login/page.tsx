@@ -20,7 +20,7 @@ export default function LoginPage() {
   function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     signIn(email.trim() || "demo@brightpath.legal");
-    toast.success("Welcome back — loading your workspace.");
+    toast.success("Welcome back. Loading your workspace.");
     router.push("/dashboard");
   }
 
