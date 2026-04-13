@@ -3,25 +3,72 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f8fafc;
+  --foreground: #0f172a;
+  --ai-tone: #2D1B69;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+.dark {
+  --background: #0b1120;
+  --foreground: #f1f5f9;
 }
 
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
   }
+}
+
+@keyframes float-bob {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-6px); }
+}
+@keyframes ambient-blob {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+@keyframes breathe-glow {
+  0%, 100% { box-shadow: 0 0 12px rgba(129,140,248,0.3), 0 0 24px rgba(45,27,105,0.15); }
+  50%      { box-shadow: 0 0 20px rgba(129,140,248,0.45), 0 0 40px rgba(45,27,105,0.25); }
+}
+@keyframes status-ping {
+  0%   { transform: scale(1); opacity: 0.6; }
+  70%  { transform: scale(2.5); opacity: 0; }
+  100% { transform: scale(2.5); opacity: 0; }
+}
+@keyframes pill-ring {
+  0%   { transform: scale(1); opacity: 0.3; }
+  100% { transform: scale(1.6); opacity: 0; }
+}
+
+.animate-float-bob { animation: float-bob 4s ease-in-out infinite; }
+.animate-ambient-blob {
+  animation: ambient-blob 20s ease infinite;
+  background-size: 200% 200%;
+}
+.animate-breathe-glow { animation: breathe-glow 3s ease-in-out infinite; }
+
+.status-dot-ping::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  background: inherit;
+  animation: status-ping 3s ease-out infinite;
+}
+
+.scanline-overlay {
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(255,255,255,0.03) 2px,
+    rgba(255,255,255,0.03) 4px
+  );
 }
