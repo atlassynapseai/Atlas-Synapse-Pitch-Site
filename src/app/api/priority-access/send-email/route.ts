@@ -1,65 +1,80 @@
 import { NextResponse } from "next/server";
 
+interface EmailData {
+  firstName: string;
+  lastName: string;
+  email: string;
+  company: string;
+  role: string;
+  howHeardAboutUs: string;
+  monthlySpending: string;
+  aiTasks: string;
+}
+
 export async function POST(req: Request) {
   try {
-    const body = await req.json();
-    const {
-      firstName,
-      lastName,
-      email,
-      company,
-      role,
-      howHeardAboutUs,
-      monthlySpending,
-      aiTasks,
-    } = body;
+    const body = (await req.json()) as EmailData;
+    const apiKey = process.env.BREVO_API_KEY;
 
-    // Send email using a service (using Resend as example, or configure your provider)
-    // For now, this is a placeholder - you'll need to configure your email service
+    if (!apiKey) {
+      console.error("BREVO_API_KEY not configured");
+      return NextResponse.json(
+        { ok: false, error: "Email service not configured" },
+        { status: 500 }
+      );
+    }
 
     const emailContent = `
-Priority Access Request Received
-
-Name: ${firstName} ${lastName}
-Email: ${email}
-Company: ${company}
-Role: ${role}
-How they heard about us: ${howHeardAboutUs}
-Monthly AI Spending: ${monthlySpending}
-AI Tasks/Use Cases:
-${aiTasks}
-
----
-You can follow up with this person at: ${email}
+<h2>New Priority Access Request</h2>
+<p><strong>Name:</strong> ${body.firstName} ${body.lastName}</p>
+<p><strong>Email:</strong> ${body.email}</p>
+<p><strong>Company:</strong> ${body.company}</p>
+<p><strong>Role:</strong> ${body.role}</p>
+<p><strong>How they heard about us:</strong> ${body.howHeardAboutUs}</p>
+<p><strong>Monthly AI Spending:</strong> ${body.monthlySpending}</p>
+<p><strong>AI Tasks/Use Cases:</strong></p>
+<p>${body.aiTasks.replace(/\n/g, "<br>")}</p>
+<hr>
+<p>Follow up with: <a href="mailto:${body.email}">${body.email}</a></p>
     `.trim();
 
-    console.log("Priority access request:", {
-      firstName,
-      lastName,
-      email,
-      company,
-      role,
-      howHeardAboutUs,
-      monthlySpending,
-      aiTasks,
+    const response = await fetch("https://api.brevo.com/v3/smtp/email", {
+      method: "POST",
+      headers: {
+        accept: "application/json",
+        "api-key": apiKey,
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({
+        sender: {
+          name: "Atlas Synapse",
+          email: "company@atlassynapseai.com",
+        },
+        to: [
+          {
+            email: "company@atlassynapseai.com",
+            name: "Atlas Synapse Team",
+          },
+        ],
+        subject: `Priority Access Request: ${body.firstName} ${body.lastName} - ${body.company}`,
+        htmlContent: emailContent,
+      }),
     });
 
-    // TODO: Implement actual email sending
-    // Example with Resend (install: npm install resend):
-    // import { Resend } from "resend";
-    // const resend = new Resend(process.env.RESEND_API_KEY);
-    // await resend.emails.send({
-    //   from: "noreply@atlassynapseai.com",
-    //   to: "company@atlassynapseai.com",
-    //   subject: `Priority Access Request: ${firstName} ${lastName}`,
-    //   html: emailContent,
-    // });
+    if (!response.ok) {
+      const error = await response.json();
+      console.error("Brevo API error:", error);
+      return NextResponse.json(
+        { ok: false, error: "Failed to send email" },
+        { status: 500 }
+      );
+    }
 
     return NextResponse.json({ ok: true });
   } catch (error) {
     console.error("Email send error:", error);
     return NextResponse.json(
-      { ok: false, error: "Failed to send email" },
+      { ok: false, error: "Failed to process request" },
       { status: 500 }
     );
   }
