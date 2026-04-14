@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { isValidEmailShape } from "@/lib/waitlist-validation";
+import { isValidName, isValidEmailShape, normalizeName } from "@/lib/waitlist-validation";
 import { supabase } from "@/lib/supabase";
 
 const ROLES = [
@@ -22,6 +22,34 @@ const HOW_HEARD = [
   "Referral",
   "Google Search",
   "GitHub",
+  "Other",
+];
+
+const CURRENCIES = [
+  { code: "USD", symbol: "$", label: "USD ($)" },
+  { code: "EUR", symbol: "€", label: "EUR (€)" },
+  { code: "GBP", symbol: "£", label: "GBP (£)" },
+  { code: "JPY", symbol: "¥", label: "JPY (¥)" },
+  { code: "CAD", symbol: "C$", label: "CAD (C$)" },
+  { code: "AUD", symbol: "A$", label: "AUD (A$)" },
+  { code: "CHF", symbol: "CHF", label: "CHF (CHF)" },
+  { code: "INR", symbol: "₹", label: "INR (₹)" },
+  { code: "SGD", symbol: "S$", label: "SGD (S$)" },
+  { code: "HKD", symbol: "HK$", label: "HKD (HK$)" },
+];
+
+const AI_USE_CASES = [
+  "Customer Support & Chatbots",
+  "Content Generation",
+  "Data Analysis & Insights",
+  "Sales & Lead Generation",
+  "Code Generation & Development",
+  "Document Processing",
+  "Email Automation",
+  "Research & Information Gathering",
+  "Image & Video Processing",
+  "Voice & Speech Recognition",
+  "Workflow Automation",
   "Other",
 ];
 
@@ -61,7 +89,9 @@ async function sendEmail(data: {
   }
 }
 
-export function PriorityAccessForm() {
+type Skin = "dark" | "light";
+
+export function PriorityAccessForm({ skin = "dark", className }: { skin?: Skin; className?: string }) {
   const [formData, setFormData] = React.useState({
     firstName: "",
     lastName: "",
@@ -69,6 +99,7 @@ export function PriorityAccessForm() {
     company: "",
     role: "",
     howHeardAboutUs: "",
+    currency: "USD",
     monthlySpending: "",
     aiTasks: "",
   });
@@ -76,22 +107,36 @@ export function PriorityAccessForm() {
   const [error, setError] = React.useState<string | null>(null);
   const [state, setState] = React.useState<"idle" | "loading" | "done">("idle");
 
+  const isDark = skin === "dark";
+  const field =
+    isDark
+      ? "w-full border-0 border-b border-white/15 bg-transparent py-3.5 text-[16px] text-white outline-none placeholder:text-[#E8D5F5]/35 focus:border-[#A78BFA]/70 focus:ring-0"
+      : "w-full border-0 border-b border-slate-300 bg-transparent py-3.5 text-[16px] text-slate-900 outline-none placeholder:text-slate-400 focus:border-[#1A3A5C] focus:ring-0 dark:border-slate-600 dark:text-slate-100 dark:placeholder:text-slate-500";
+
+  const selectField =
+    isDark
+      ? "w-full border-0 border-b border-white/15 bg-transparent py-3.5 text-[16px] text-white outline-none focus:border-[#A78BFA]/70 focus:ring-0 [&>option]:bg-[#1C1658] [&>option]:text-white"
+      : "w-full border-0 border-b border-slate-300 bg-transparent py-3.5 text-[16px] text-slate-900 outline-none focus:border-[#1A3A5C] focus:ring-0";
+
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError(null);
 
     if (state !== "idle") return;
 
+    const n = normalizeName(formData.firstName);
+    const em = formData.email.trim().toLowerCase();
+
     // Validation
-    if (!formData.firstName.trim()) {
+    if (!n) {
       setError("First name is required.");
       return;
     }
-    if (!formData.lastName.trim()) {
+    if (!normalizeName(formData.lastName)) {
       setError("Last name is required.");
       return;
     }
-    if (!isValidEmailShape(formData.email)) {
+    if (!isValidEmailShape(em)) {
       setError("Enter a valid work email.");
       return;
     }
@@ -111,15 +156,20 @@ export function PriorityAccessForm() {
       setError("Monthly spending is required.");
       return;
     }
-    if (!formData.aiTasks.trim()) {
-      setError("Please describe your AI tasks.");
+    const aiTasksText = formData.aiTasks.trim();
+    if (!aiTasksText) {
+      setError("Please select your AI use cases.");
+      return;
+    }
+    if (aiTasksText.length < 10) {
+      setError("Please provide more details about your AI use cases (at least 10 characters).");
       return;
     }
 
     setState("loading");
 
     // Verify email domain
-    const isValidEmail = await verifyEmailDomain(formData.email);
+    const isValidEmail = await verifyEmailDomain(em);
     if (!isValidEmail) {
       setState("idle");
       setError("Please use a real work email (no temporary inboxes).");
@@ -132,13 +182,13 @@ export function PriorityAccessForm() {
         .from("priority_access_requests")
         .insert([
           {
-            first_name: formData.firstName,
-            last_name: formData.lastName,
-            email: formData.email.trim().toLowerCase(),
+            first_name: n,
+            last_name: normalizeName(formData.lastName),
+            email: em,
             company: formData.company,
             role: formData.role,
             how_heard_about_us: formData.howHeardAboutUs,
-            monthly_spending: formData.monthlySpending,
+            monthly_spending: `${formData.currency} ${formData.monthlySpending}`,
             ai_tasks: formData.aiTasks,
           },
         ]);
@@ -150,7 +200,16 @@ export function PriorityAccessForm() {
       }
 
       // Send email
-      await sendEmail(formData);
+      await sendEmail({
+        firstName: n,
+        lastName: normalizeName(formData.lastName),
+        email: em,
+        company: formData.company,
+        role: formData.role,
+        howHeardAboutUs: formData.howHeardAboutUs,
+        monthlySpending: `${formData.currency} ${formData.monthlySpending}`,
+        aiTasks: formData.aiTasks,
+      });
 
       setState("done");
     } catch (err) {
@@ -160,7 +219,7 @@ export function PriorityAccessForm() {
   }
 
   return (
-    <div className="w-full max-w-[600px]">
+    <div className={className}>
       <AnimatePresence mode="wait">
         {state !== "done" ? (
           <motion.div
@@ -189,7 +248,7 @@ export function PriorityAccessForm() {
                         setError(null);
                       }}
                       disabled={state === "loading"}
-                      className="w-full border-0 border-b border-white/15 bg-transparent py-3.5 text-[16px] text-white outline-none placeholder:text-[#E8D5F5]/35 focus:border-[#A78BFA]/70 focus:ring-0"
+                      className={field}
                     />
                   </label>
                   <label>
@@ -203,7 +262,7 @@ export function PriorityAccessForm() {
                         setError(null);
                       }}
                       disabled={state === "loading"}
-                      className="w-full border-0 border-b border-white/15 bg-transparent py-3.5 text-[16px] text-white outline-none placeholder:text-[#E8D5F5]/35 focus:border-[#A78BFA]/70 focus:ring-0"
+                      className={field}
                     />
                   </label>
                 </div>
@@ -220,7 +279,7 @@ export function PriorityAccessForm() {
                       setError(null);
                     }}
                     disabled={state === "loading"}
-                    className="w-full border-0 border-b border-white/15 bg-transparent py-3.5 text-[16px] text-white outline-none placeholder:text-[#E8D5F5]/35 focus:border-[#A78BFA]/70 focus:ring-0"
+                    className={field}
                   />
                 </label>
 
@@ -236,7 +295,7 @@ export function PriorityAccessForm() {
                       setError(null);
                     }}
                     disabled={state === "loading"}
-                    className="w-full border-0 border-b border-white/15 bg-transparent py-3.5 text-[16px] text-white outline-none placeholder:text-[#E8D5F5]/35 focus:border-[#A78BFA]/70 focus:ring-0"
+                    className={field}
                   />
                 </label>
 
@@ -250,7 +309,7 @@ export function PriorityAccessForm() {
                       setError(null);
                     }}
                     disabled={state === "loading"}
-                    className="w-full border-0 border-b border-white/15 bg-transparent py-3.5 text-[16px] text-white outline-none placeholder:text-[#E8D5F5]/35 focus:border-[#A78BFA]/70 focus:ring-0"
+                    className={selectField}
                   >
                     <option value="">Select your role</option>
                     {ROLES.map((role) => (
@@ -274,7 +333,7 @@ export function PriorityAccessForm() {
                       setError(null);
                     }}
                     disabled={state === "loading"}
-                    className="w-full border-0 border-b border-white/15 bg-transparent py-3.5 text-[16px] text-white outline-none placeholder:text-[#E8D5F5]/35 focus:border-[#A78BFA]/70 focus:ring-0"
+                    className={selectField}
                   >
                     <option value="">How did you hear about us?</option>
                     {HOW_HEARD.map((source) => (
@@ -285,30 +344,79 @@ export function PriorityAccessForm() {
                   </select>
                 </label>
 
-                {/* Monthly Spending */}
+                {/* Monthly Spending with Currency */}
+                <div className="flex gap-3">
+                  <label className="w-[100px]">
+                    <span className="sr-only">Currency</span>
+                    <select
+                      value={formData.currency}
+                      onChange={(e) => {
+                        setFormData({
+                          ...formData,
+                          currency: e.target.value,
+                        });
+                        setError(null);
+                      }}
+                      disabled={state === "loading"}
+                      className={selectField}
+                    >
+                      {CURRENCIES.map((cur) => (
+                        <option key={cur.code} value={cur.code}>
+                          {cur.label}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                  <label className="flex-1">
+                    <span className="sr-only">Monthly spending amount</span>
+                    <input
+                      type="text"
+                      placeholder="e.g., 500 / 1000 / 5000+"
+                      value={formData.monthlySpending}
+                      onChange={(e) => {
+                        setFormData({
+                          ...formData,
+                          monthlySpending: e.target.value,
+                        });
+                        setError(null);
+                      }}
+                      disabled={state === "loading"}
+                      className={field}
+                    />
+                  </label>
+                </div>
+
+                {/* AI Use Cases */}
                 <label>
-                  <span className="sr-only">Monthly AI spending</span>
-                  <input
-                    type="text"
-                    placeholder="Monthly AI spending (e.g., $500-1000)"
-                    value={formData.monthlySpending}
+                  <span className="sr-only">AI use cases</span>
+                  <select
+                    value={formData.aiTasks.split(",")[0] || ""}
                     onChange={(e) => {
-                      setFormData({
-                        ...formData,
-                        monthlySpending: e.target.value,
-                      });
-                      setError(null);
+                      if (e.target.value) {
+                        setFormData({
+                          ...formData,
+                          aiTasks: e.target.value,
+                        });
+                        setError(null);
+                      }
                     }}
                     disabled={state === "loading"}
-                    className="w-full border-0 border-b border-white/15 bg-transparent py-3.5 text-[16px] text-white outline-none placeholder:text-[#E8D5F5]/35 focus:border-[#A78BFA]/70 focus:ring-0"
-                  />
+                    className={selectField}
+                  >
+                    <option value="">Select primary AI use case</option>
+                    {AI_USE_CASES.map((useCase) => (
+                      <option key={useCase} value={useCase}>
+                        {useCase}
+                      </option>
+                    ))}
+                  </select>
                 </label>
 
-                {/* AI Tasks */}
+                {/* Additional details textarea */}
                 <label>
-                  <span className="sr-only">What tasks are your AI tools completing?</span>
+                  <span className="sr-only">Additional details</span>
                   <textarea
-                    placeholder="What tasks are your AI tools completing? (What problems are you solving?)"
+                    placeholder="Tell us more about your AI setup and goals (e.g., we're using Claude for customer support, processing 1000+ inquiries daily)..."
                     value={formData.aiTasks}
                     onChange={(e) => {
                       setFormData({ ...formData, aiTasks: e.target.value });
