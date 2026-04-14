@@ -6,8 +6,7 @@ import { useAppStore } from "@/lib/store";
 import { isValidName, isValidEmailShape, normalizeName } from "@/lib/waitlist-validation";
 import { supabase } from "@/lib/supabase";
 
-const PRIORITY_HREF =
-  "mailto:company@atlassynapseai.com?subject=Priority%20access%20%E2%80%94%20waitlist&body=Please%20share%20your%20company%20name%20and%20why%20you%E2%80%99d%20like%20early%20access.";
+const PRIORITY_HREF = "/priority-access";
 
 type Skin = "dark" | "light";
 
