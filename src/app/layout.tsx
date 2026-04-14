@@ -10,7 +10,11 @@ export const metadata: Metadata = {
   description:
     "Monitor, evaluate, and manage your AI agents in plain English. Know when they fail. Know if they're worth it.",
   icons: {
-    icon: "/logo.png",
+    icon: [
+      { url: "/logo.png", type: "image/png" },
+      { url: "/logo.png", sizes: "32x32", type: "image/png" },
+    ],
+    apple: "/logo.png",
   },
 };
 

@@ -62,8 +62,8 @@ export function HeroSection() {
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5, delay: 0.5 }}
             className="mt-6 flex flex-wrap items-center gap-2 pb-6 text-[11px] font-medium uppercase tracking-[0.1em] text-[#E8D5F5]/35 lg:pb-0">
             <span>Built by a team from</span>
-            {["CMU", "Oxford", "UW-Madison", "UVA"].map((u, i) => (
-              <span key={u}><span className="text-[#E8D5F5]/55">{u}</span>{i < 3 && <span className="mx-1">&middot;</span>}</span>
+            {["CMU", "Oxford", "UW-Madison", "NEU", "UVA"].map((u, i) => (
+              <span key={u}><span className="text-[#E8D5F5]/55">{u}</span>{i < 4 && <span className="mx-1">&middot;</span>}</span>
             ))}
           </motion.div>
         </div>
