@@ -8,10 +8,30 @@ import { supabase } from "@/lib/supabase";
 const ROLES = [
   "CEO/Founder",
   "CTO/VP Engineering",
+  "VP Product",
+  "VP Sales",
+  "VP Marketing",
   "Operations Manager",
+  "Operations Director",
   "Product Manager",
+  "Engineering Manager",
+  "Engineering Lead",
+  "Solutions Architect",
   "Business Development",
-  "Finance/CFO",
+  "Business Development Manager",
+  "Sales Manager",
+  "Account Executive",
+  "Finance Manager",
+  "CFO",
+  "Controller",
+  "Marketing Manager",
+  "Growth Manager",
+  "Content Manager",
+  "HR Manager",
+  "Recruiter",
+  "DevOps Engineer",
+  "Systems Engineer",
+  "Technical Lead",
   "Other",
 ];
 
@@ -22,20 +42,66 @@ const HOW_HEARD = [
   "Referral",
   "Google Search",
   "GitHub",
+  "Hacker News",
+  "Conference",
+  "Newsletter",
+  "Podcast",
   "Other",
 ];
 
 const CURRENCIES = [
-  { code: "USD", symbol: "$", label: "USD ($)" },
-  { code: "EUR", symbol: "€", label: "EUR (€)" },
-  { code: "GBP", symbol: "£", label: "GBP (£)" },
-  { code: "JPY", symbol: "¥", label: "JPY (¥)" },
-  { code: "CAD", symbol: "C$", label: "CAD (C$)" },
-  { code: "AUD", symbol: "A$", label: "AUD (A$)" },
-  { code: "CHF", symbol: "CHF", label: "CHF (CHF)" },
-  { code: "INR", symbol: "₹", label: "INR (₹)" },
-  { code: "SGD", symbol: "S$", label: "SGD (S$)" },
-  { code: "HKD", symbol: "HK$", label: "HKD (HK$)" },
+  { code: "USD", symbol: "$", label: "USD ($) - United States" },
+  { code: "EUR", symbol: "€", label: "EUR (€) - Eurozone" },
+  { code: "GBP", symbol: "£", label: "GBP (£) - United Kingdom" },
+  { code: "JPY", symbol: "¥", label: "JPY (¥) - Japan" },
+  { code: "CAD", symbol: "C$", label: "CAD (C$) - Canada" },
+  { code: "AUD", symbol: "A$", label: "AUD (A$) - Australia" },
+  { code: "CHF", symbol: "CHF", label: "CHF - Switzerland" },
+  { code: "INR", symbol: "₹", label: "INR (₹) - India" },
+  { code: "SGD", symbol: "S$", label: "SGD (S$) - Singapore" },
+  { code: "HKD", symbol: "HK$", label: "HKD (HK$) - Hong Kong" },
+  { code: "NZD", symbol: "NZ$", label: "NZD (NZ$) - New Zealand" },
+  { code: "ZAR", symbol: "R", label: "ZAR (R) - South Africa" },
+  { code: "BRL", symbol: "R$", label: "BRL (R$) - Brazil" },
+  { code: "MXN", symbol: "$", label: "MXN ($) - Mexico" },
+  { code: "KRW", symbol: "₩", label: "KRW (₩) - South Korea" },
+  { code: "IDR", symbol: "Rp", label: "IDR (Rp) - Indonesia" },
+  { code: "THB", symbol: "฿", label: "THB (฿) - Thailand" },
+  { code: "MYR", symbol: "RM", label: "MYR (RM) - Malaysia" },
+  { code: "PHP", symbol: "₱", label: "PHP (₱) - Philippines" },
+  { code: "VND", symbol: "₫", label: "VND (₫) - Vietnam" },
+  { code: "PKR", symbol: "₨", label: "PKR (₨) - Pakistan" },
+  { code: "BDT", symbol: "৳", label: "BDT (৳) - Bangladesh" },
+  { code: "LKR", symbol: "Rs", label: "LKR (Rs) - Sri Lanka" },
+  { code: "AED", symbol: "د.إ", label: "AED (د.إ) - UAE" },
+  { code: "SAR", symbol: "﷼", label: "SAR (﷼) - Saudi Arabia" },
+  { code: "QAR", symbol: "ر.ق", label: "QAR (ر.ق) - Qatar" },
+  { code: "KWD", symbol: "د.ك", label: "KWD (د.ك) - Kuwait" },
+  { code: "BHD", symbol: "ب.د", label: "BHD (ب.د) - Bahrain" },
+  { code: "OMR", symbol: "ر.ع", label: "OMR (ر.ع) - Oman" },
+  { code: "JOD", symbol: "د.ا", label: "JOD (د.ا) - Jordan" },
+  { code: "ILS", symbol: "₪", label: "ILS (₪) - Israel" },
+  { code: "TRY", symbol: "₺", label: "TRY (₺) - Turkey" },
+  { code: "RUB", symbol: "₽", label: "RUB (₽) - Russia" },
+  { code: "PLN", symbol: "zł", label: "PLN (zł) - Poland" },
+  { code: "CZK", symbol: "Kč", label: "CZK (Kč) - Czech Republic" },
+  { code: "HUF", symbol: "Ft", label: "HUF (Ft) - Hungary" },
+  { code: "RON", symbol: "lei", label: "RON (lei) - Romania" },
+  { code: "BGN", symbol: "лв", label: "BGN (лв) - Bulgaria" },
+  { code: "HRK", symbol: "kn", label: "HRK (kn) - Croatia" },
+  { code: "SEK", symbol: "kr", label: "SEK (kr) - Sweden" },
+  { code: "NOK", symbol: "kr", label: "NOK (kr) - Norway" },
+  { code: "DKK", symbol: "kr", label: "DKK (kr) - Denmark" },
+  { code: "ISK", symbol: "kr", label: "ISK (kr) - Iceland" },
+  { code: "CLP", symbol: "$", label: "CLP ($) - Chile" },
+  { code: "ARS", symbol: "$", label: "ARS ($) - Argentina" },
+  { code: "UYU", symbol: "$U", label: "UYU ($U) - Uruguay" },
+  { code: "COP", symbol: "$", label: "COP ($) - Colombia" },
+  { code: "PEN", symbol: "S/", label: "PEN (S/) - Peru" },
+  { code: "NGN", symbol: "₦", label: "NGN (₦) - Nigeria" },
+  { code: "GHS", symbol: "₵", label: "GHS (₵) - Ghana" },
+  { code: "EGP", symbol: "E£", label: "EGP (E£) - Egypt" },
+  { code: "KES", symbol: "KSh", label: "KES (KSh) - Kenya" },
 ];
 
 const AI_USE_CASES = [
@@ -73,9 +139,13 @@ async function sendEmail(data: {
   email: string;
   company: string;
   role: string;
+  roleOther: string;
   howHeardAboutUs: string;
+  howHeardAboutUsOther: string;
   monthlySpending: string;
+  aiTasksPrimary: string;
   aiTasks: string;
+  aiTasksOther: string;
 }) {
   try {
     const res = await fetch("/api/priority-access/send-email", {
@@ -98,10 +168,14 @@ export function PriorityAccessForm({ skin = "dark", className }: { skin?: Skin; 
     email: "",
     company: "",
     role: "",
+    roleOther: "",
     howHeardAboutUs: "",
+    howHeardAboutUsOther: "",
     currency: "USD",
     monthlySpending: "",
+    aiTasksPrimary: "",
     aiTasks: "",
+    aiTasksOther: "",
   });
 
   const [error, setError] = React.useState<string | null>(null);
@@ -148,21 +222,49 @@ export function PriorityAccessForm({ skin = "dark", className }: { skin?: Skin; 
       setError("Please select your role.");
       return;
     }
+    if (formData.role === "Other" && !formData.roleOther.trim()) {
+      setError("Please specify your role.");
+      return;
+    }
+    if (formData.role === "Other" && formData.roleOther.trim().length < 3) {
+      setError("Role must be at least 3 characters.");
+      return;
+    }
     if (!formData.howHeardAboutUs) {
       setError("How did you hear about us is required.");
+      return;
+    }
+    if (formData.howHeardAboutUs === "Other" && !formData.howHeardAboutUsOther.trim()) {
+      setError("Please specify how you heard about us.");
+      return;
+    }
+    if (formData.howHeardAboutUs === "Other" && formData.howHeardAboutUsOther.trim().length < 3) {
+      setError("Please provide more details (at least 3 characters).");
       return;
     }
     if (!formData.monthlySpending.trim()) {
       setError("Monthly spending is required.");
       return;
     }
+    if (!formData.aiTasksPrimary) {
+      setError("Please select your primary AI use case.");
+      return;
+    }
+    if (formData.aiTasksPrimary === "Other" && !formData.aiTasksOther.trim()) {
+      setError("Please specify your AI use case.");
+      return;
+    }
+    if (formData.aiTasksPrimary === "Other" && formData.aiTasksOther.trim().length < 10) {
+      setError("Please provide more details about your AI use case (at least 10 characters).");
+      return;
+    }
     const aiTasksText = formData.aiTasks.trim();
     if (!aiTasksText) {
-      setError("Please select your AI use cases.");
+      setError("Please describe your AI setup and goals.");
       return;
     }
     if (aiTasksText.length < 10) {
-      setError("Please provide more details about your AI use cases (at least 10 characters).");
+      setError("Please provide more details about your AI setup (at least 10 characters).");
       return;
     }
 
@@ -186,9 +288,10 @@ export function PriorityAccessForm({ skin = "dark", className }: { skin?: Skin; 
             last_name: normalizeName(formData.lastName),
             email: em,
             company: formData.company,
-            role: formData.role,
-            how_heard_about_us: formData.howHeardAboutUs,
+            role: formData.role === "Other" ? formData.roleOther : formData.role,
+            how_heard_about_us: formData.howHeardAboutUs === "Other" ? formData.howHeardAboutUsOther : formData.howHeardAboutUs,
             monthly_spending: `${formData.currency} ${formData.monthlySpending}`,
+            ai_tasks_primary: formData.aiTasksPrimary === "Other" ? formData.aiTasksOther : formData.aiTasksPrimary,
             ai_tasks: formData.aiTasks,
           },
         ]);
@@ -206,9 +309,13 @@ export function PriorityAccessForm({ skin = "dark", className }: { skin?: Skin; 
         email: em,
         company: formData.company,
         role: formData.role,
+        roleOther: formData.roleOther,
         howHeardAboutUs: formData.howHeardAboutUs,
+        howHeardAboutUsOther: formData.howHeardAboutUsOther,
         monthlySpending: `${formData.currency} ${formData.monthlySpending}`,
+        aiTasksPrimary: formData.aiTasksPrimary,
         aiTasks: formData.aiTasks,
+        aiTasksOther: formData.aiTasksOther,
       });
 
       setState("done");
@@ -305,7 +412,7 @@ export function PriorityAccessForm({ skin = "dark", className }: { skin?: Skin; 
                   <select
                     value={formData.role}
                     onChange={(e) => {
-                      setFormData({ ...formData, role: e.target.value });
+                      setFormData({ ...formData, role: e.target.value, roleOther: "" });
                       setError(null);
                     }}
                     disabled={state === "loading"}
@@ -320,6 +427,24 @@ export function PriorityAccessForm({ skin = "dark", className }: { skin?: Skin; 
                   </select>
                 </label>
 
+                {/* Role - Other */}
+                {formData.role === "Other" && (
+                  <label>
+                    <span className="sr-only">Specify your role</span>
+                    <input
+                      type="text"
+                      placeholder="Please specify your role"
+                      value={formData.roleOther}
+                      onChange={(e) => {
+                        setFormData({ ...formData, roleOther: e.target.value });
+                        setError(null);
+                      }}
+                      disabled={state === "loading"}
+                      className={field}
+                    />
+                  </label>
+                )}
+
                 {/* How heard about us */}
                 <label>
                   <span className="sr-only">How did you hear about us?</span>
@@ -329,6 +454,7 @@ export function PriorityAccessForm({ skin = "dark", className }: { skin?: Skin; 
                       setFormData({
                         ...formData,
                         howHeardAboutUs: e.target.value,
+                        howHeardAboutUsOther: "",
                       });
                       setError(null);
                     }}
@@ -343,6 +469,24 @@ export function PriorityAccessForm({ skin = "dark", className }: { skin?: Skin; 
                     ))}
                   </select>
                 </label>
+
+                {/* How heard about us - Other */}
+                {formData.howHeardAboutUs === "Other" && (
+                  <label>
+                    <span className="sr-only">Specify how you heard about us</span>
+                    <input
+                      type="text"
+                      placeholder="Please tell us how you found us"
+                      value={formData.howHeardAboutUsOther}
+                      onChange={(e) => {
+                        setFormData({ ...formData, howHeardAboutUsOther: e.target.value });
+                        setError(null);
+                      }}
+                      disabled={state === "loading"}
+                      className={field}
+                    />
+                  </label>
+                )}
 
                 {/* Monthly Spending with Currency */}
                 <div className="flex gap-3">
@@ -390,15 +534,14 @@ export function PriorityAccessForm({ skin = "dark", className }: { skin?: Skin; 
                 <label>
                   <span className="sr-only">AI use cases</span>
                   <select
-                    value={formData.aiTasks.split(",")[0] || ""}
+                    value={formData.aiTasksPrimary}
                     onChange={(e) => {
-                      if (e.target.value) {
-                        setFormData({
-                          ...formData,
-                          aiTasks: e.target.value,
-                        });
-                        setError(null);
-                      }
+                      setFormData({
+                        ...formData,
+                        aiTasksPrimary: e.target.value,
+                        aiTasksOther: "",
+                      });
+                      setError(null);
                     }}
                     disabled={state === "loading"}
                     className={selectField}
@@ -411,6 +554,24 @@ export function PriorityAccessForm({ skin = "dark", className }: { skin?: Skin; 
                     ))}
                   </select>
                 </label>
+
+                {/* AI Use Case - Other */}
+                {formData.aiTasksPrimary === "Other" && (
+                  <label>
+                    <span className="sr-only">Specify your AI use case</span>
+                    <input
+                      type="text"
+                      placeholder="Please specify your primary AI use case"
+                      value={formData.aiTasksOther}
+                      onChange={(e) => {
+                        setFormData({ ...formData, aiTasksOther: e.target.value });
+                        setError(null);
+                      }}
+                      disabled={state === "loading"}
+                      className={field}
+                    />
+                  </label>
+                )}
 
                 {/* Additional details textarea */}
                 <label>

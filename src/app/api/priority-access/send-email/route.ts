@@ -6,9 +6,13 @@ interface EmailData {
   email: string;
   company: string;
   role: string;
+  roleOther: string;
   howHeardAboutUs: string;
+  howHeardAboutUsOther: string;
   monthlySpending: string;
+  aiTasksPrimary: string;
   aiTasks: string;
+  aiTasksOther: string;
 }
 
 export async function POST(req: Request) {
@@ -24,15 +28,20 @@ export async function POST(req: Request) {
       );
     }
 
+    const roleDisplay = body.role === "Other" ? body.roleOther : body.role;
+    const howHeardDisplay = body.howHeardAboutUs === "Other" ? body.howHeardAboutUsOther : body.howHeardAboutUs;
+    const aiUseDisplay = body.aiTasksPrimary === "Other" ? body.aiTasksOther : body.aiTasksPrimary;
+
     const emailContent = `
 <h2>New Priority Access Request</h2>
 <p><strong>Name:</strong> ${body.firstName} ${body.lastName}</p>
 <p><strong>Email:</strong> ${body.email}</p>
 <p><strong>Company:</strong> ${body.company}</p>
-<p><strong>Role:</strong> ${body.role}</p>
-<p><strong>How they heard about us:</strong> ${body.howHeardAboutUs}</p>
+<p><strong>Role:</strong> ${roleDisplay}</p>
+<p><strong>How they heard about us:</strong> ${howHeardDisplay}</p>
 <p><strong>Monthly AI Spending:</strong> ${body.monthlySpending}</p>
-<p><strong>AI Tasks/Use Cases:</strong></p>
+<p><strong>Primary AI Use Case:</strong> ${aiUseDisplay}</p>
+<p><strong>AI Setup & Goals:</strong></p>
 <p>${body.aiTasks.replace(/\n/g, "<br>")}</p>
 <hr>
 <p>Follow up with: <a href="mailto:${body.email}">${body.email}</a></p>
