@@ -10,7 +10,9 @@ export const metadata: Metadata = {
   description:
     "Monitor, evaluate, and manage your AI agents in plain English. Know when they fail. Know if they're worth it.",
   icons: {
-    icon: "/favicon.ico",
+    icon: [
+      { url: "/favicon.png", type: "image/png", sizes: "64x64" },
+    ],
     apple: "/logo.png",
   },
 };
@@ -23,7 +25,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <link rel="icon" href="/logo.png" type="image/png" />
+        <link rel="icon" href="/favicon.png" type="image/png" sizes="64x64" />
         <link rel="apple-touch-icon" href="/logo.png" />
       </head>
       <body className={`${inter.variable} min-h-screen font-sans antialiased`}>
