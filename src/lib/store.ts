@@ -22,9 +22,11 @@ type WorkspaceState = {
   visibleAgents: () => AgentDefinition[];
 };
 
+export type WaitlistSignup = { name: string; email: string };
+
 type WaitlistState = {
-  waitlistEmails: string[];
-  addWaitlistEmail: (email: string) => void;
+  waitlistSignups: WaitlistSignup[];
+  addWaitlistSignup: (entry: WaitlistSignup) => void;
 };
 
 export type AppStore = AuthState & WorkspaceState & WaitlistState;
@@ -46,20 +48,22 @@ export const useAppStore = create<AppStore>()(
       resetAgents: () => set({ disconnectedAgentIds: [] }),
       visibleAgents: () => agentsSeed.filter((a) => !get().disconnectedAgentIds.includes(a.id)),
 
-      waitlistEmails: [],
-      addWaitlistEmail: (email) =>
-        set((s) => ({
-          waitlistEmails: s.waitlistEmails.includes(email) ? s.waitlistEmails : [...s.waitlistEmails, email],
-        })),
+      waitlistSignups: [],
+      addWaitlistSignup: (entry) =>
+        set((s) => {
+          const email = entry.email.trim().toLowerCase();
+          if (s.waitlistSignups.some((x) => x.email.toLowerCase() === email)) return s;
+          return { waitlistSignups: [...s.waitlistSignups, { name: entry.name.trim(), email }] };
+        }),
     }),
     {
-      name: "atlas-synapse-demo",
+      name: "atlas-synapse-demo-v2",
       partialize: (s) => ({
         isAuthenticated: s.isAuthenticated,
         userEmail: s.userEmail,
         userName: s.userName,
         disconnectedAgentIds: s.disconnectedAgentIds,
-        waitlistEmails: s.waitlistEmails,
+        waitlistSignups: s.waitlistSignups,
       }),
     },
   ),

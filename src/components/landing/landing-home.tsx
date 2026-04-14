@@ -1,16 +1,12 @@
 "use client";
 
-import * as React from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { toast } from "sonner";
 import { ArrowRight, CheckCircle2, Shield, TrendingUp, Zap } from "lucide-react";
-import { useAppStore } from "@/lib/store";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { WaitlistSignupForm } from "@/components/landing/waitlist-signup-form";
 
 const fade = {
   initial: { opacity: 0, y: 12 },
@@ -20,27 +16,6 @@ const fade = {
 };
 
 export function LandingHome() {
-  const addWaitlistEmail = useAppStore((s) => s.addWaitlistEmail);
-  const [email, setEmail] = React.useState("");
-
-  function onWaitlist(e: React.FormEvent) {
-    e.preventDefault();
-    if (!email.trim() || !email.includes("@")) {
-      toast.error("Please enter a valid email.");
-      return;
-    }
-    addWaitlistEmail(email.trim());
-    try {
-      const existing = JSON.parse(localStorage.getItem("atlas-waitlist-emails") ?? "[]") as string[];
-      if (!existing.includes(email.trim())) existing.push(email.trim());
-      localStorage.setItem("atlas-waitlist-emails", JSON.stringify(existing));
-    } catch {
-      /* demo only */
-    }
-    toast.success("You're on the list! We'll reach out soon.");
-    setEmail("");
-  }
-
   return (
     <div className="min-h-screen bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-50">
       <header className="sticky top-0 z-30 border-b border-slate-200/80 bg-white/80 backdrop-blur dark:border-slate-800 dark:bg-slate-950/80">
@@ -272,27 +247,12 @@ export function LandingHome() {
             We&apos;re onboarding a small group of legal and professional services teams. No spam: one thoughtful note
             when your slot opens.
           </p>
-          <motion.form {...fade} onSubmit={onWaitlist} className="mt-8 flex flex-col gap-3 sm:flex-row">
-            <div className="flex-1 text-left">
-              <Label htmlFor="email" className="sr-only">
-                Email
-              </Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder="you@company.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="h-11"
-              />
-            </div>
-            <Button type="submit" className="h-11 bg-[#1A3A5C] hover:bg-[#14314d]">
-              Join waitlist
-            </Button>
-          </motion.form>
-          <p className="mt-3 flex items-center justify-center gap-2 text-xs text-slate-500">
+          <motion.div {...fade} className="mx-auto mt-8 max-w-lg text-left">
+            <WaitlistSignupForm skin="light" />
+          </motion.div>
+          <p className="mt-4 flex items-center justify-center gap-2 text-xs text-slate-500">
             <CheckCircle2 className="h-4 w-4 text-[#2E7D32]" />
-            Demo mode stores your email locally in this browser only.
+            Demo mode stores signups locally in this browser only.
           </p>
         </div>
       </section>

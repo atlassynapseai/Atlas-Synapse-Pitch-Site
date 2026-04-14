@@ -2,19 +2,19 @@
  * Landing section backgrounds + wave edge colors.
  * Waves must use the exact hex at each boundary so the “lower” fill reads as the next pane.
  *
- * Rhythm: dark → light → dark → light … (hero dark, problem light, how dark, sneak light,
- * differentiators dark, hr orbit light, waitlist dark).
+ * Rhythm: … → differentiators (dark) → quote break (#1A1520) → waitlist (dark).
  */
 export const LANDING = {
   hero: {
-    gradient: "linear-gradient(180deg, #0C0820 0%, #1B1464 100%)",
-    bottom: "#1B1464",
+    gradient: "linear-gradient(180deg, #0A0E17 0%, #0E1424 100%)",
+    bottom: "#0E1424",
   },
   problem: {
-    solid: "#E8E2F4",
+    solid: "#FAF8F5",
   },
+  /** Cool deep navy */
   how: {
-    solid: "#071018",
+    solid: "#0A101E",
   },
   sneak: {
     /** Cool mist: light pane between dark “How” and dark “Why we’re different” */
@@ -22,14 +22,8 @@ export const LANDING = {
     edge: "#E8EDF6",
   },
   differentiators: {
-    /** Dark wine (swapped with former HR orbit) */
-    gradient: "linear-gradient(180deg, #10060E 0%, #170F15 50%, #10060E 100%)",
-    edge: "#10060E",
-  },
-  hrOrbit: {
-    /** Warm light beige (swapped with former differentiators) */
-    gradient: "linear-gradient(180deg, #F5F0E8 0%, #EDE4D8 48%, #F3EDE3 100%)",
-    edge: "#F5F0E8",
+    gradient: "linear-gradient(180deg, #0A0E17 0%, #0D1118 50%, #0A0E17 100%)",
+    edge: "#0A0E17",
   },
   waitlist: {
     gradient: "linear-gradient(180deg, #080818 0%, #1C1658 100%)",

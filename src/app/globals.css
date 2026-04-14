@@ -47,6 +47,58 @@ body {
   100% { transform: scale(1.6); opacity: 0; }
 }
 
+@keyframes quote-particle-drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(var(--dx, 8px), var(--dy, -10px), 0);
+  }
+}
+
+.quote-particle {
+  animation-name: quote-particle-drift;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+
+@keyframes quote-pill-gold-glow {
+  0%,
+  100% {
+    box-shadow: 0 0 20px rgba(232, 168, 56, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(232, 168, 56, 0.5);
+  }
+}
+
+@keyframes quote-pill-purple-glow {
+  0%,
+  100% {
+    box-shadow: 0 0 20px rgba(127, 119, 221, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(127, 119, 221, 0.5);
+  }
+}
+
+.quote-pill-gold {
+  animation: quote-pill-gold-glow 2.5s ease-in-out infinite;
+}
+
+.quote-pill-purple {
+  animation: quote-pill-purple-glow 3s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .quote-particle,
+  .quote-pill-gold,
+  .quote-pill-purple {
+    animation: none !important;
+  }
+}
+
 .animate-float-bob { animation: float-bob 4s ease-in-out infinite; }
 .animate-ambient-blob {
   animation: ambient-blob 20s ease infinite;

@@ -245,7 +245,7 @@ export function DifferentiatorsSection() {
         <polygon points="400,300 750,250 850,550 350,580" fill="rgba(167,139,250,0.04)" stroke="rgba(167,139,250,0.08)" strokeWidth="1" />
         <polygon points="1050,350 1440,300 1440,600 1000,580" fill="rgba(245,158,11,0.04)" stroke="rgba(245,158,11,0.07)" strokeWidth="1" />
       </svg>
-      <div className="relative z-10 mx-auto max-w-[1400px] px-5 py-10 md:px-10 lg:py-14">
+      <div className="relative z-10 mx-auto max-w-[1400px] px-5 py-8 md:px-10 md:py-9 lg:py-11">
         {/* Left-aligned heading */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}

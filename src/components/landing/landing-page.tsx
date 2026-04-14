@@ -8,18 +8,18 @@ import { DoodleDefs } from "./doodle-defs";
 import { HeroSection } from "./hero-section";
 import {
   WaveDarkToLight,
-  WaveLightToDark,
+  WaveProblemToHow,
   WaveHowToSneak,
   WaveSneakToDifferentiators,
-  WaveDifferentiatorsToHrOrbit,
-  WaveHrOrbitToWaitlist,
+  WaveDifferentiatorsToQuote,
+  WaveQuoteToWaitlist,
   WaveWaitlistToFooter,
 } from "./wave-divider";
 import { ProblemSection } from "./problem-section";
 import { HowItWorksSection } from "./how-it-works-section";
 import { SneakPeekSection } from "./sneak-peek-section";
 import { DifferentiatorsSection } from "./differentiators-section";
-import { HrOrbitSection } from "./hr-orbit-section";
+import { QuoteBreakSection } from "./quote-break-section";
 import { WaitlistSection } from "./waitlist-section";
 import { Footer } from "./footer";
 
@@ -35,15 +35,15 @@ export function LandingPage() {
       <HeroSection />
       <WaveDarkToLight />
       <ProblemSection />
-      <WaveLightToDark />
+      <WaveProblemToHow />
       <HowItWorksSection />
       <WaveHowToSneak />
       <SneakPeekSection />
       <WaveSneakToDifferentiators />
       <DifferentiatorsSection />
-      <WaveDifferentiatorsToHrOrbit />
-      <HrOrbitSection />
-      <WaveHrOrbitToWaitlist />
+      <WaveDifferentiatorsToQuote />
+      <QuoteBreakSection />
+      <WaveQuoteToWaitlist />
       <WaitlistSection />
       <WaveWaitlistToFooter />
       <Footer />

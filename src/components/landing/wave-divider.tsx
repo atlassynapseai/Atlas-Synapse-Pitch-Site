@@ -48,18 +48,21 @@ function FunkyWave({ topBg, bottomFill, variant, height = 80, scribbleStroke = "
   );
 }
 
-/** Hero (indigo end) → Problem (lavender pane) */
+/** Hero (navy) → Problem (warm light pane) */
 export function WaveDarkToLight() {
   const top = LANDING.hero.bottom;
   const fill = LANDING.problem.solid;
   return (
     <div style={{ background: top, lineHeight: 0, marginBottom: -1 }}>
-      <svg viewBox="0 0 1440 72" preserveAspectRatio="none" style={{ display: "block", width: "100%" }}>
-        <path d="M0,36 C320,72 560,0 800,36 C1040,72 1280,18 1440,36 L1440,72 L0,72 Z" fill={fill} />
+      <svg viewBox="0 0 1440 80" preserveAspectRatio="none" style={{ display: "block", width: "100%", height: 72 }}>
         <path
-          d="M0,40 Q360,18 720,42 T1440,38"
+          d="M0,44 C280,76 520,16 760,48 C1000,78 1240,28 1440,42 L1440,80 L0,80 Z"
+          fill={fill}
+        />
+        <path
+          d="M0,48 Q360,28 720,50 T1440,44"
           fill="none"
-          stroke="rgba(255,255,255,0.12)"
+          stroke="rgba(255,255,255,0.1)"
           strokeWidth="1.25"
           strokeLinecap="round"
           vectorEffect="non-scaling-stroke"
@@ -69,18 +72,21 @@ export function WaveDarkToLight() {
   );
 }
 
-/** Problem → How it works (ink-blue pane) */
-export function WaveLightToDark() {
+/** Problem (warm light) → How it works (cool navy) */
+export function WaveProblemToHow() {
   const top = LANDING.problem.solid;
   const fill = LANDING.how.solid;
   return (
     <div style={{ background: top, lineHeight: 0, marginBottom: -1 }}>
-      <svg viewBox="0 0 1440 72" preserveAspectRatio="none" style={{ display: "block", width: "100%" }}>
-        <path d="M0,28 C280,68 520,4 820,44 C1060,72 1260,16 1440,40 L1440,72 L0,72 Z" fill={fill} />
+      <svg viewBox="0 0 1440 80" preserveAspectRatio="none" style={{ display: "block", width: "100%", height: 72 }}>
         <path
-          d="M0,34 C400,8 720,62 1080,36 S1320,52 1440,44"
+          d="M0,32 C260,72 500,8 780,46 C1020,72 1220,20 1440,38 L1440,80 L0,80 Z"
+          fill={fill}
+        />
+        <path
+          d="M0,38 C380,12 720,68 1080,42 S1320,54 1440,46"
           fill="none"
-          stroke="rgba(45, 27, 105, 0.18)"
+          stroke="rgba(45, 27, 105, 0.14)"
           strokeWidth="1.25"
           strokeLinecap="round"
           vectorEffect="non-scaling-stroke"
@@ -103,42 +109,61 @@ export function WaveHowToSneak() {
   );
 }
 
-/** Product preview (light) → Why we’re different (dark) */
+/** Product preview (light) → Why we’re different (dark): diagonal slash (not a wave) */
 export function WaveSneakToDifferentiators() {
+  const top = LANDING.sneak.edge;
+  const fill = LANDING.differentiators.edge;
   return (
-    <FunkyWave
-      topBg={LANDING.sneak.edge}
-      bottomFill={LANDING.differentiators.edge}
-      variant={2}
-      height={82}
-      scribbleStroke="rgba(27, 20, 100, 0.16)"
-    />
+    <div style={{ background: top, lineHeight: 0, marginBottom: -1 }}>
+      <svg viewBox="0 0 1440 96" preserveAspectRatio="none" style={{ display: "block", width: "100%", height: 56 }}>
+        <path d="M0,88 L1440,14 L1440,96 L0,96 Z" fill={fill} />
+      </svg>
+    </div>
   );
 }
 
-/** Why we’re different (dark) → What we replace (light beige) */
-export function WaveDifferentiatorsToHrOrbit() {
+/** Why we’re different (dark) → Quote break (deep warm charcoal) */
+export function WaveDifferentiatorsToQuote() {
   return (
     <FunkyWave
       topBg={LANDING.differentiators.edge}
-      bottomFill={LANDING.hrOrbit.edge}
+      bottomFill="#1A1520"
       variant={3}
       height={78}
-      scribbleStroke="rgba(245, 240, 232, 0.35)"
+      scribbleStroke="rgba(148, 120, 220, 0.2)"
     />
   );
 }
 
-/** HR orbit → Waitlist (cool midnight → violet) */
-export function WaveHrOrbitToWaitlist() {
+/** Quote break (charcoal) → Waitlist (dark violet) */
+export function WaveQuoteToWaitlist() {
+  const top = "#1A1520";
+  const fill = LANDING.waitlist.top;
   return (
-    <FunkyWave
-      topBg={LANDING.hrOrbit.edge}
-      bottomFill={LANDING.waitlist.top}
-      variant={4}
-      height={84}
-      scribbleStroke="rgba(199, 210, 254, 0.12)"
-    />
+    <div style={{ background: top, lineHeight: 0, marginBottom: -1 }}>
+      <svg viewBox="0 0 1440 84" preserveAspectRatio="none" style={{ display: "block", width: "100%", height: 76 }}>
+        <path
+          d="M0,40 C280,8 520,92 800,34 C1040,0 1240,78 1440,36 L1440,84 L0,84 Z"
+          fill={fill}
+        />
+        <path
+          d="M0,48 C360,20 680,88 1040,38 S1320,62 1440,44"
+          fill="none"
+          stroke="rgba(110, 82, 92, 0.14)"
+          strokeWidth="1.25"
+          strokeLinecap="round"
+          vectorEffect="non-scaling-stroke"
+        />
+        <path
+          d="M0,54 Q720,30 1440,50"
+          fill="none"
+          stroke="rgba(60, 48, 54, 0.08)"
+          strokeWidth="1.1"
+          strokeLinecap="round"
+          vectorEffect="non-scaling-stroke"
+        />
+      </svg>
+    </div>
   );
 }
 
