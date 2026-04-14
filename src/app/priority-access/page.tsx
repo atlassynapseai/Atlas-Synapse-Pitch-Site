@@ -7,17 +7,7 @@ export const metadata = {
 
 export default function PriorityAccessPage() {
   return (
-    <main className="relative min-h-screen overflow-hidden px-5 py-16 md:px-10">
-      <style>{`
-        @keyframes float {
-          0%, 100% { transform: translateY(0px); }
-          50% { transform: translateY(-20px); }
-        }
-        .quote-particle {
-          animation: float var(--duration, 20s) ease-in-out var(--delay, 0s) infinite;
-        }
-      `}</style>
-
+    <main className="relative min-h-screen overflow-hidden px-5 py-16 md:px-10" style={{ background: "linear-gradient(180deg, #0A0E17 0%, #0D1118 100%)" }}>
       <svg
         className="pointer-events-none absolute inset-0 h-full w-full"
         aria-hidden="true"
