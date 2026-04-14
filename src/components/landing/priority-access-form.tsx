@@ -133,6 +133,34 @@ async function verifyEmailDomain(email: string): Promise<boolean> {
   }
 }
 
+function isValidTextContent(text: string): boolean {
+  const trimmed = text.trim();
+  if (trimmed.length < 10) return false;
+
+  // Check for vowel content (at least 20% vowels to detect gibberish)
+  const vowels = trimmed.match(/[aeiouAEIOU]/g) || [];
+  const vowelRatio = vowels.length / trimmed.length;
+  if (vowelRatio < 0.15) return false;
+
+  // Check for word-like patterns (spaces or common punctuation)
+  const hasSpaces = trimmed.includes(" ");
+  const hasCommas = trimmed.includes(",");
+  const hasPeriods = trimmed.includes(".");
+  const hasParentheses = trimmed.includes("(") || trimmed.includes(")");
+
+  // At least has proper spacing or punctuation
+  if (!hasSpaces && !hasCommas && !hasPeriods && !hasParentheses) return false;
+
+  // If has spaces, ensure average word length is reasonable (3-20 chars)
+  if (hasSpaces) {
+    const words = trimmed.split(/\s+/);
+    const avgWordLength = words.reduce((sum, w) => sum + w.length, 0) / words.length;
+    if (avgWordLength < 2.5 || avgWordLength > 25) return false;
+  }
+
+  return true;
+}
+
 async function sendEmail(data: {
   firstName: string;
   lastName: string;
@@ -263,8 +291,8 @@ export function PriorityAccessForm({ skin = "dark", className }: { skin?: Skin; 
       setError("Please describe your AI setup and goals.");
       return;
     }
-    if (aiTasksText.length < 10) {
-      setError("Please provide more details about your AI setup (at least 10 characters).");
+    if (!isValidTextContent(aiTasksText)) {
+      setError("Please provide meaningful details about your AI setup (avoid random text, use real words, proper spacing).");
       return;
     }
 
@@ -291,8 +319,7 @@ export function PriorityAccessForm({ skin = "dark", className }: { skin?: Skin; 
             role: formData.role === "Other" ? formData.roleOther : formData.role,
             how_heard_about_us: formData.howHeardAboutUs === "Other" ? formData.howHeardAboutUsOther : formData.howHeardAboutUs,
             monthly_spending: `${formData.currency} ${formData.monthlySpending}`,
-            ai_tasks_primary: formData.aiTasksPrimary === "Other" ? formData.aiTasksOther : formData.aiTasksPrimary,
-            ai_tasks: formData.aiTasks,
+            ai_tasks: `Primary: ${formData.aiTasksPrimary === "Other" ? formData.aiTasksOther : formData.aiTasksPrimary}\n\nDetails: ${formData.aiTasks}`,
           },
         ]);
 
