@@ -4,6 +4,7 @@ import * as React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAppStore } from "@/lib/store";
 import { isValidName, isValidEmailShape, normalizeName } from "@/lib/waitlist-validation";
+import { supabase } from "@/lib/supabase";
 
 const PRIORITY_HREF =
   "mailto:company@atlassynapseai.com?subject=Priority%20access%20%E2%80%94%20waitlist&body=Please%20share%20your%20company%20name%20and%20why%20you%E2%80%99d%20like%20early%20access.";
@@ -51,6 +52,26 @@ function persistSignup(name: string, email: string) {
     localStorage.setItem(LS_KEY, JSON.stringify(list));
   } catch {
     /* demo */
+  }
+}
+
+async function saveToSupabase(name: string, email: string) {
+  try {
+    const { error } = await supabase.from("waitlist_signups").insert([
+      {
+        name: normalizeName(name),
+        email: email.trim().toLowerCase(),
+        created_at: new Date().toISOString(),
+      },
+    ]);
+    if (error) {
+      console.error("Supabase error:", error);
+      return false;
+    }
+    return true;
+  } catch (err) {
+    console.error("Failed to save to Supabase:", err);
+    return false;
   }
 }
 
@@ -107,6 +128,7 @@ export function WaitlistSignupForm({ skin, className }: { skin: Skin; className?
       /* */
     }
     persistSignup(n, em);
+    await saveToSupabase(n, em);
     addWaitlistSignup({ name: n, email: em });
     setState("done");
   }
