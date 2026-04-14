@@ -57,6 +57,10 @@ function persistSignup(name: string, email: string) {
 
 async function saveToSupabase(name: string, email: string) {
   try {
+    if (!supabase) {
+      console.warn("Supabase not configured - data saved to localStorage only");
+      return false;
+    }
     const { error } = await supabase.from("waitlist_signups").insert([
       {
         name: normalizeName(name),
