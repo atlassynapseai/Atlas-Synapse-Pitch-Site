@@ -22,6 +22,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="apple-touch-icon" href="/logo.png" />
+      </head>
       <body className={`${inter.variable} min-h-screen font-sans antialiased`}>
         <AppProviders>{children}</AppProviders>
       </body>
