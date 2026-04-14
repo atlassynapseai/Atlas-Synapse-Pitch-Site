@@ -9,6 +9,9 @@ export const metadata: Metadata = {
   title: "Atlas Synapse | The HR Department for Your AI",
   description:
     "Monitor, evaluate, and manage your AI agents in plain English. Know when they fail. Know if they're worth it.",
+  icons: {
+    icon: "/logo.png",
+  },
 };
 
 export default function RootLayout({
