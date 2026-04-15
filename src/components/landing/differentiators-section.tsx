@@ -238,7 +238,7 @@ function ComparisonPanel({ comp }: { comp: Comparison }) {
 
 export function DifferentiatorsSection() {
   return (
-    <section className="relative" style={{ background: LANDING.differentiators.gradient }}>
+    <section id="features" className="relative" style={{ background: LANDING.differentiators.gradient }}>
       <svg className="pointer-events-none absolute inset-0 h-full w-full" aria-hidden="true">
         <polygon points="0,0 350,30 280,350 0,320" fill="rgba(232,213,245,0.05)" stroke="rgba(232,213,245,0.09)" strokeWidth="1.5" />
         <polygon points="800,50 1300,0 1440,300 900,350" fill="rgba(129,140,248,0.06)" stroke="rgba(129,140,248,0.1)" strokeWidth="1.5" />
