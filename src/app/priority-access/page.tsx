@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { PriorityAccessForm } from "@/components/landing/priority-access-form";
 
 export const metadata = {
@@ -35,6 +36,17 @@ export default function PriorityAccessPage() {
       />
 
       <div className="relative z-10 mx-auto max-w-[600px]">
+        {/* Back Button */}
+        <Link
+          href="/"
+          className="mb-8 inline-flex items-center gap-2 text-[14px] text-[#E8D5F5]/60 transition-colors hover:text-[#E8D5F5]"
+        >
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="M10 2L4 8l6 6" />
+          </svg>
+          Back to home
+        </Link>
+
         <div className="mb-12 text-center">
           <h1 className="text-[40px] font-extrabold tracking-[-0.02em] text-white md:text-[50px]">
             Request Priority Access
