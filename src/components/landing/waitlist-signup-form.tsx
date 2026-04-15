@@ -56,19 +56,18 @@ function persistSignup(name: string, email: string) {
 
 async function saveToSupabase(name: string, email: string) {
   try {
-    if (!supabase) {
-      console.warn("Supabase not configured - data saved to localStorage only");
-      return false;
-    }
-    const { error } = await supabase.from("waitlist_signups").insert([
-      {
+    const response = await fetch("/api/waitlist/save", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
         name: normalizeName(name),
         email: email.trim().toLowerCase(),
-        created_at: new Date().toISOString(),
-      },
-    ]);
-    if (error) {
-      console.error("Supabase error:", error);
+      }),
+    });
+
+    const data = (await response.json()) as { ok?: boolean; error?: string };
+    if (!response.ok || !data.ok) {
+      console.error("Waitlist save error:", data.error);
       return false;
     }
     return true;
