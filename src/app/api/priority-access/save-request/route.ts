@@ -6,15 +6,22 @@ export async function POST(req: Request) {
     const body = await req.json();
 
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-    const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+    // Try both possible env var names
+    const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_ROLE_SECRET;
 
     if (!supabaseUrl || !supabaseServiceKey) {
-      console.error("Supabase credentials missing");
+      console.error("Supabase credentials missing", {
+        url: !!supabaseUrl,
+        key: !!supabaseServiceKey,
+        envKeys: Object.keys(process.env).filter(k => k.includes('SUPABASE'))
+      });
       return NextResponse.json(
         { ok: false, error: "Database not configured" },
         { status: 500 }
       );
     }
+
+    console.log("Using Supabase:", supabaseUrl);
 
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
@@ -30,6 +37,7 @@ export async function POST(req: Request) {
       );
     }
 
+    console.log("Successfully saved data");
     return NextResponse.json({ ok: true });
   } catch (error) {
     console.error("Save request error:", error);
