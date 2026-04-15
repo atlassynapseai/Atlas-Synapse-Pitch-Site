@@ -3,6 +3,7 @@
 import * as React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { isValidName, isValidEmailShape, normalizeName } from "@/lib/waitlist-validation";
+import { submitPriorityAccessForm } from "@/lib/forms";
 
 const ROLES = [
   "CEO/Founder",
@@ -331,7 +332,7 @@ export function PriorityAccessForm({ skin = "dark", className }: { skin?: Skin; 
         return;
       }
 
-      // Send email
+      // Send internal notification email
       await sendEmail({
         firstName: n,
         lastName: normalizeName(formData.lastName),
@@ -345,6 +346,19 @@ export function PriorityAccessForm({ skin = "dark", className }: { skin?: Skin; 
         aiTasksPrimary: formData.aiTasksPrimary,
         aiTasks: formData.aiTasks,
         aiTasksOther: formData.aiTasksOther,
+      });
+
+      // Create CRM lead with risk scoring + send user confirmation email
+      await submitPriorityAccessForm({
+        firstName: n,
+        lastName: normalizeName(formData.lastName),
+        email: em,
+        company: formData.company,
+        role: formData.role === "Other" ? formData.roleOther : formData.role,
+        aiUseCase: formData.aiTasksPrimary === "Other" ? formData.aiTasksOther : formData.aiTasksPrimary,
+        hearAboutUs: formData.howHeardAboutUs === "Other" ? formData.howHeardAboutUsOther : formData.howHeardAboutUs,
+        currency: formData.currency,
+        additionalDetails: formData.aiTasks,
       });
 
       setState("done");
