@@ -3,7 +3,6 @@
 import * as React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { isValidName, isValidEmailShape, normalizeName } from "@/lib/waitlist-validation";
-import { supabase } from "@/lib/supabase";
 
 const ROLES = [
   "CEO/Founder",
@@ -306,27 +305,29 @@ export function PriorityAccessForm({ skin = "dark", className }: { skin?: Skin; 
       return;
     }
 
-    // Save to Supabase
+    // Save to Supabase via API endpoint
     try {
-      const { error: dbError } = await supabase
-        .from("priority_access_requests")
-        .insert([
-          {
-            first_name: n,
-            last_name: normalizeName(formData.lastName),
-            email: em,
-            company: formData.company,
-            role: formData.role === "Other" ? formData.roleOther : formData.role,
-            how_heard_about_us: formData.howHeardAboutUs === "Other" ? formData.howHeardAboutUsOther : formData.howHeardAboutUs,
-            monthly_spending: `${formData.currency} ${formData.monthlySpending}`,
-            ai_tasks: `Primary: ${formData.aiTasksPrimary === "Other" ? formData.aiTasksOther : formData.aiTasksPrimary}\n\nDetails: ${formData.aiTasks}`,
-          },
-        ]);
+      const saveRes = await fetch("/api/priority-access/save-request", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          first_name: n,
+          last_name: normalizeName(formData.lastName),
+          email: em,
+          company: formData.company,
+          role: formData.role === "Other" ? formData.roleOther : formData.role,
+          how_heard_about_us: formData.howHeardAboutUs === "Other" ? formData.howHeardAboutUsOther : formData.howHeardAboutUs,
+          monthly_spending: `${formData.currency} ${formData.monthlySpending}`,
+          ai_tasks: `Primary: ${formData.aiTasksPrimary === "Other" ? formData.aiTasksOther : formData.aiTasksPrimary}\n\nDetails: ${formData.aiTasks}`,
+        }),
+      });
 
-      if (dbError) {
+      const saveData = (await saveRes.json()) as { ok?: boolean; error?: string };
+
+      if (!saveRes.ok || !saveData.ok) {
         setState("idle");
-        console.error("Supabase insert error:", dbError);
-        setError(`Failed to save: ${dbError.message || "Please try again."}`);
+        console.error("Save error:", saveData.error);
+        setError(`Failed to save: ${saveData.error || "Please try again."}`);
         return;
       }
 
