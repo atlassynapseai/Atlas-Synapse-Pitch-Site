@@ -325,7 +325,8 @@ export function PriorityAccessForm({ skin = "dark", className }: { skin?: Skin; 
 
       if (dbError) {
         setState("idle");
-        setError("Failed to save your information. Please try again.");
+        console.error("Supabase insert error:", dbError);
+        setError(`Failed to save: ${dbError.message || "Please try again."}`);
         return;
       }
 
