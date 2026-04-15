@@ -15,20 +15,29 @@ export async function POST(req: Request) {
       );
     }
 
-    console.log("Attempting insert to:", supabaseUrl);
+    console.log("Calling insert_priority_access function");
 
-    // Use REST API directly with anon key (works since RLS is disabled)
-    const response = await fetch(`${supabaseUrl}/rest/v1/priority_access_requests`, {
+    // Call the stored function via RPC
+    const response = await fetch(`${supabaseUrl}/rest/v1/rpc/insert_priority_access`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         "apikey": supabaseAnonKey,
       },
-      body: JSON.stringify(body),
+      body: JSON.stringify({
+        p_first_name: body.first_name,
+        p_last_name: body.last_name,
+        p_email: body.email,
+        p_company: body.company,
+        p_role: body.role,
+        p_how_heard_about_us: body.how_heard_about_us,
+        p_monthly_spending: body.monthly_spending,
+        p_ai_tasks: body.ai_tasks,
+      }),
     });
 
     const responseText = await response.text();
-    console.log("Supabase REST response:", response.status, responseText);
+    console.log("Supabase RPC response:", response.status, responseText);
 
     if (!response.ok) {
       let errorMsg = "Failed to save";
@@ -38,14 +47,14 @@ export async function POST(req: Request) {
       } catch (e) {
         errorMsg = responseText || errorMsg;
       }
-      console.error("REST API error:", errorMsg);
+      console.error("RPC error:", errorMsg);
       return NextResponse.json(
         { ok: false, error: errorMsg },
         { status: response.status }
       );
     }
 
-    console.log("Successfully saved data");
+    console.log("Successfully saved data via function");
     return NextResponse.json({ ok: true });
   } catch (error) {
     console.error("Save request error:", error);
