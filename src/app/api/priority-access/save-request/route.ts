@@ -1,39 +1,48 @@
 import { NextResponse } from "next/server";
-import { createClient } from "@supabase/supabase-js";
 
 export async function POST(req: Request) {
   try {
     const body = await req.json();
 
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-    // Try both possible env var names
     const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_ROLE_SECRET;
 
     if (!supabaseUrl || !supabaseServiceKey) {
-      console.error("Supabase credentials missing", {
-        url: !!supabaseUrl,
-        key: !!supabaseServiceKey,
-        envKeys: Object.keys(process.env).filter(k => k.includes('SUPABASE'))
-      });
+      console.error("Supabase credentials missing");
       return NextResponse.json(
         { ok: false, error: "Database not configured" },
         { status: 500 }
       );
     }
 
-    console.log("Using Supabase:", supabaseUrl);
+    console.log("Attempting insert to:", supabaseUrl);
 
-    const supabase = createClient(supabaseUrl, supabaseServiceKey);
+    // Use REST API directly
+    const response = await fetch(`${supabaseUrl}/rest/v1/priority_access_requests`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "apikey": supabaseServiceKey,
+        "Authorization": `Bearer ${supabaseServiceKey}`,
+      },
+      body: JSON.stringify(body),
+    });
 
-    const { error: dbError } = await supabase
-      .from("priority_access_requests")
-      .insert([body]);
+    const responseText = await response.text();
+    console.log("Supabase REST response:", response.status, responseText);
 
-    if (dbError) {
-      console.error("Supabase insert error:", dbError);
+    if (!response.ok) {
+      let errorMsg = "Failed to save";
+      try {
+        const errorData = JSON.parse(responseText);
+        errorMsg = errorData.message || errorData.error_description || errorMsg;
+      } catch (e) {
+        errorMsg = responseText || errorMsg;
+      }
+      console.error("REST API error:", errorMsg);
       return NextResponse.json(
-        { ok: false, error: dbError.message || "Failed to save" },
-        { status: 400 }
+        { ok: false, error: errorMsg },
+        { status: response.status }
       );
     }
 
