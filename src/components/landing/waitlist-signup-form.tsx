@@ -84,6 +84,17 @@ export function WaitlistSignupForm({ skin, className }: { skin: Skin; className?
   const [error, setError] = React.useState<string | null>(null);
   const [state, setState] = React.useState<"idle" | "loading" | "done">("idle");
 
+  React.useEffect(() => {
+    if (state !== "done") return;
+    const t = setTimeout(() => {
+      setName("");
+      setEmail("");
+      setError(null);
+      setState("idle");
+    }, 4000);
+    return () => clearTimeout(t);
+  }, [state]);
+
   const isDark = skin === "dark";
   const field =
     isDark
