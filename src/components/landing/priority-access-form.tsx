@@ -544,12 +544,14 @@ export function PriorityAccessForm({ skin = "dark", className }: { skin?: Skin; 
                     <span className="sr-only">Monthly spending amount</span>
                     <input
                       type="text"
-                      placeholder="e.g., 500 / 1000 / 5000+"
+                      placeholder="e.g., 500 / 1000 / 5000"
                       value={formData.monthlySpending}
                       onChange={(e) => {
+                        // Only allow digits
+                        const numericValue = e.target.value.replace(/[^0-9]/g, "");
                         setFormData({
                           ...formData,
-                          monthlySpending: e.target.value,
+                          monthlySpending: numericValue,
                         });
                         setError(null);
                       }}
