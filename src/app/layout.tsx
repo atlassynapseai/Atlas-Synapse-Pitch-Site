@@ -9,11 +9,35 @@ export const metadata: Metadata = {
   title: "Atlas Synapse | The HR Department for Your AI",
   description:
     "Monitor, evaluate, and manage your AI agents in plain English. Know when they fail. Know if they're worth it.",
+  metadataBase: new URL("https://atlassynapseai.com"),
   icons: {
     icon: [
       { url: "/favicon.png", type: "image/png", sizes: "64x64" },
     ],
     apple: "/logo.png",
+  },
+  openGraph: {
+    type: "website",
+    url: "https://atlassynapseai.com",
+    title: "Atlas Synapse | The HR Department for Your AI",
+    description:
+      "Monitor, evaluate, and manage your AI agents in plain English. Know when they fail. Know if they're worth it.",
+    siteName: "Atlas Synapse",
+    images: [
+      {
+        url: "/logo.png",
+        width: 512,
+        height: 512,
+        alt: "Atlas Synapse",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary",
+    title: "Atlas Synapse | The HR Department for Your AI",
+    description:
+      "Monitor, evaluate, and manage your AI agents in plain English. Know when they fail. Know if they're worth it.",
+    images: ["/logo.png"],
   },
 };
 
