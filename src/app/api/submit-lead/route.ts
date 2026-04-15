@@ -184,10 +184,8 @@ export async function POST(req: Request) {
           <!-- HEADER GRADIENT CARD -->
           <tr>
             <td style="border-radius:20px 20px 0 0;background:linear-gradient(135deg,#2D1B69 0%,#1C1658 40%,#0F0B3A 100%);padding:48px 40px 36px;text-align:center;">
-              <!-- Logo mark -->
-              <div style="display:inline-block;width:52px;height:52px;background:linear-gradient(135deg,#818CF8,#A78BFA);border-radius:14px;margin-bottom:20px;line-height:52px;font-size:26px;text-align:center;">
-                &#9650;
-              </div>
+              <!-- Logo -->
+              <img src="https://atlassynapseai.com/logo.png" alt="Atlas Synapse" width="64" height="64" style="display:block;margin:0 auto 20px;border-radius:14px;" />
               <h1 style="margin:0 0 6px;font-size:30px;font-weight:900;color:#FFFFFF;letter-spacing:-0.5px;line-height:1.2;">
                 You&rsquo;re in the queue,<br /><span style="color:#A78BFA;">${firstName}.</span>
               </h1>
