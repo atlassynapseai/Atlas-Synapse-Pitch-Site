@@ -168,32 +168,124 @@ export async function POST(req: Request) {
       process.env.VITE_BREVO_FROM_NAME ?? "Atlas Synapse";
 
     if (brevoKey) {
-      const htmlContent = `
-<!DOCTYPE html>
-<html>
-<body style="font-family:Inter,sans-serif;background:#0A0E17;color:#E8D5F5;margin:0;padding:40px 20px;">
-  <div style="max-width:560px;margin:0 auto;background:#1C1658;border-radius:16px;padding:40px;border:1px solid rgba(255,255,255,0.08);">
-    <h2 style="font-size:24px;font-weight:800;margin:0 0 8px;color:#fff;">
-      You&rsquo;re in the queue, ${firstName}.
-    </h2>
-    <p style="color:#A78BFA;font-size:15px;margin:0 0 24px;">
-      Priority Access Request Received &mdash; Atlas Synapse
-    </p>
-    <p style="font-size:15px;line-height:1.6;color:#E8D5F5/80;margin:0 0 16px;">
-      We received your request and are reviewing applications on a rolling basis. We'll reach out within <strong style="color:#fff;">24 hours</strong> to schedule a quick call.
-    </p>
-    <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:24px 0;" />
-    <table style="width:100%;font-size:14px;border-collapse:collapse;">
-      <tr><td style="padding:6px 0;color:#A78BFA;width:120px;">Name</td><td style="color:#fff;">${name}</td></tr>
-      <tr><td style="padding:6px 0;color:#A78BFA;">Company</td><td style="color:#fff;">${company}</td></tr>
-      ${role ? `<tr><td style="padding:6px 0;color:#A78BFA;">Role</td><td style="color:#fff;">${role}</td></tr>` : ""}
-      ${aiUseCase ? `<tr><td style="padding:6px 0;color:#A78BFA;">Use Case</td><td style="color:#fff;">${aiUseCase}</td></tr>` : ""}
-    </table>
-    <hr style="border:none;border-top:1px solid rgba(255,255,255,0.08);margin:24px 0;" />
-    <p style="font-size:13px;color:rgba(232,213,245,0.4);margin:0;">
-      Atlas Synapse LLC &middot; <a href="https://atlassynapseai.com" style="color:#A78BFA;text-decoration:none;">atlassynapseai.com</a>
-    </p>
-  </div>
+      const htmlContent = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0" />
+<title>Priority Access Request Received</title>
+</head>
+<body style="margin:0;padding:0;background-color:#0A0E17;font-family:Arial,Helvetica,sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#0A0E17;padding:40px 20px;">
+    <tr>
+      <td align="center">
+        <table width="580" cellpadding="0" cellspacing="0" border="0" style="max-width:580px;width:100%;">
+
+          <!-- HEADER GRADIENT CARD -->
+          <tr>
+            <td style="border-radius:20px 20px 0 0;background:linear-gradient(135deg,#2D1B69 0%,#1C1658 40%,#0F0B3A 100%);padding:48px 40px 36px;text-align:center;">
+              <!-- Logo mark -->
+              <div style="display:inline-block;width:52px;height:52px;background:linear-gradient(135deg,#818CF8,#A78BFA);border-radius:14px;margin-bottom:20px;line-height:52px;font-size:26px;text-align:center;">
+                &#9650;
+              </div>
+              <h1 style="margin:0 0 6px;font-size:30px;font-weight:900;color:#FFFFFF;letter-spacing:-0.5px;line-height:1.2;">
+                You&rsquo;re in the queue,<br /><span style="color:#A78BFA;">${firstName}.</span>
+              </h1>
+              <p style="margin:12px 0 0;font-size:14px;color:#C4B5FD;letter-spacing:0.5px;text-transform:uppercase;font-weight:600;">
+                Priority Access &mdash; Atlas Synapse
+              </p>
+            </td>
+          </tr>
+
+          <!-- ACCENT BAR -->
+          <tr>
+            <td style="height:4px;background:linear-gradient(90deg,#818CF8,#A78BFA,#C4B5FD,#818CF8);"></td>
+          </tr>
+
+          <!-- BODY -->
+          <tr>
+            <td style="background-color:#12103A;padding:36px 40px;">
+
+              <!-- Message -->
+              <p style="margin:0 0 24px;font-size:16px;line-height:1.7;color:#D4C9F0;">
+                Thanks for applying — we&rsquo;re reviewing priority access on a rolling basis and will reach out within
+                <strong style="color:#FFFFFF;background-color:#2D1B69;padding:2px 8px;border-radius:6px;">24 hours</strong>
+                to schedule a quick call.
+              </p>
+
+              <!-- Divider -->
+              <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:28px 0;">
+                <tr><td style="height:1px;background-color:#2D2566;"></td></tr>
+              </table>
+
+              <!-- Details heading -->
+              <p style="margin:0 0 16px;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#6D63B0;">
+                Your Submission
+              </p>
+
+              <!-- Details table -->
+              <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <td style="padding:10px 14px;background-color:#1A1750;border-radius:10px 10px 0 0;border-bottom:1px solid #2D2566;">
+                    <span style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#818CF8;">Name</span><br />
+                    <span style="font-size:15px;color:#FFFFFF;font-weight:600;">${name}</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding:10px 14px;background-color:#1A1750;border-bottom:1px solid #2D2566;">
+                    <span style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#818CF8;">Company</span><br />
+                    <span style="font-size:15px;color:#FFFFFF;font-weight:600;">${company}</span>
+                  </td>
+                </tr>
+                ${role ? `<tr>
+                  <td style="padding:10px 14px;background-color:#1A1750;border-bottom:1px solid #2D2566;">
+                    <span style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#818CF8;">Role</span><br />
+                    <span style="font-size:15px;color:#FFFFFF;font-weight:600;">${role}</span>
+                  </td>
+                </tr>` : ""}
+                ${aiUseCase ? `<tr>
+                  <td style="padding:10px 14px;background-color:#1A1750;border-radius:0 0 10px 10px;">
+                    <span style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#818CF8;">Use Case</span><br />
+                    <span style="font-size:15px;color:#FFFFFF;font-weight:600;">${aiUseCase}</span>
+                  </td>
+                </tr>` : ""}
+              </table>
+
+              <!-- Divider -->
+              <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin:28px 0;">
+                <tr><td style="height:1px;background-color:#2D2566;"></td></tr>
+              </table>
+
+              <!-- CTA -->
+              <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <td align="center">
+                    <a href="https://atlassynapseai.com" style="display:inline-block;padding:14px 36px;background:linear-gradient(135deg,#2D1B69,#818CF8);color:#FFFFFF;font-size:15px;font-weight:700;text-decoration:none;border-radius:12px;letter-spacing:0.3px;">
+                      Visit Atlas Synapse &rarr;
+                    </a>
+                  </td>
+                </tr>
+              </table>
+
+            </td>
+          </tr>
+
+          <!-- FOOTER -->
+          <tr>
+            <td style="background-color:#0D0B2A;border-radius:0 0 20px 20px;padding:20px 40px;text-align:center;border-top:1px solid #1E1B4B;">
+              <p style="margin:0;font-size:12px;color:#4B4680;">
+                Atlas Synapse LLC &nbsp;&middot;&nbsp;
+                <a href="https://atlassynapseai.com" style="color:#6D63B0;text-decoration:none;">atlassynapseai.com</a>
+                &nbsp;&middot;&nbsp;
+                <a href="https://atlassynapseai.com/privacy" style="color:#6D63B0;text-decoration:none;">Privacy Policy</a>
+              </p>
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
 </body>
 </html>`.trim();
 
