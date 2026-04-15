@@ -5,9 +5,9 @@ export async function POST(req: Request) {
     const body = await req.json();
 
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-    const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_ROLE_SECRET;
+    const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
-    if (!supabaseUrl || !supabaseServiceKey) {
+    if (!supabaseUrl || !supabaseAnonKey) {
       console.error("Supabase credentials missing");
       return NextResponse.json(
         { ok: false, error: "Database not configured" },
@@ -17,13 +17,12 @@ export async function POST(req: Request) {
 
     console.log("Attempting insert to:", supabaseUrl);
 
-    // Use REST API directly
+    // Use REST API directly with anon key (works since RLS is disabled)
     const response = await fetch(`${supabaseUrl}/rest/v1/priority_access_requests`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "apikey": supabaseServiceKey,
-        "Authorization": `Bearer ${supabaseServiceKey}`,
+        "apikey": supabaseAnonKey,
       },
       body: JSON.stringify(body),
     });
