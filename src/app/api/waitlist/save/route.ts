@@ -15,19 +15,18 @@ export async function POST(req: Request) {
       );
     }
 
-    console.log("Saving waitlist signup:", body.email);
+    console.log("Calling insert_waitlist_signup function:", body.email);
 
-    // Use REST API directly with anon key
-    const response = await fetch(`${supabaseUrl}/rest/v1/waitlist_signups`, {
+    // Call the stored function via RPC
+    const response = await fetch(`${supabaseUrl}/rest/v1/rpc/insert_waitlist_signup`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         "apikey": supabaseAnonKey,
       },
       body: JSON.stringify({
-        name: body.name,
-        email: body.email,
-        created_at: new Date().toISOString(),
+        p_name: body.name,
+        p_email: body.email,
       }),
     });
 
