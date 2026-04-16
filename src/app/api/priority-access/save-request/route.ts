@@ -33,6 +33,7 @@ export async function POST(req: Request) {
         p_how_heard_about_us: body.how_heard_about_us,
         p_monthly_spending: body.monthly_spending,
         p_ai_tasks: body.ai_tasks,
+        p_source: "request_priority_access",
       }),
     });
 

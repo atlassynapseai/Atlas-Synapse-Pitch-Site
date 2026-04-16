@@ -38,6 +38,29 @@ function calcRiskScore(role: string, aiUseCase: string): number {
 }
 
 // ---------------------------------------------------------------------------
+// Simple in-memory rate limiter (resets on cold start — good enough for edge)
+// ---------------------------------------------------------------------------
+const emailHits = new Map<string, { count: number; resetAt: number }>();
+const ipHits = new Map<string, { count: number; resetAt: number }>();
+
+function checkRateLimit(
+  key: string,
+  store: Map<string, { count: number; resetAt: number }>,
+  limit: number,
+  windowMs: number
+): boolean {
+  const now = Date.now();
+  const entry = store.get(key);
+  if (!entry || now > entry.resetAt) {
+    store.set(key, { count: 1, resetAt: now + windowMs });
+    return true;
+  }
+  if (entry.count >= limit) return false;
+  entry.count++;
+  return true;
+}
+
+// ---------------------------------------------------------------------------
 // CORS helpers
 // ---------------------------------------------------------------------------
 function corsHeaders() {
@@ -73,6 +96,26 @@ export async function POST(req: Request) {
     const firstName = (body.firstName ?? "").trim();
     const email = (body.email ?? "").trim().toLowerCase();
     const company = (body.company ?? "").trim();
+
+    // -- Rate limiting -----------------------------------------------------
+    const ip =
+      req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
+      req.headers.get("x-real-ip") ??
+      "unknown";
+    if (!checkRateLimit(email, emailHits, 5, 24 * 60 * 60 * 1000)) {
+      console.warn(`[SECURITY] Email rate limit hit: ${email}`);
+      return NextResponse.json(
+        { success: false, message: "You've already submitted a request. We'll be in touch within 24 hours." },
+        { status: 429, headers: corsHeaders() }
+      );
+    }
+    if (!checkRateLimit(ip, ipHits, 20, 60 * 60 * 1000)) {
+      console.warn(`[SECURITY] IP rate limit hit: ${ip}`);
+      return NextResponse.json(
+        { success: false, message: "Too many requests. Please try again later." },
+        { status: 429, headers: corsHeaders() }
+      );
+    }
 
     if (!firstName) {
       return NextResponse.json(
@@ -124,6 +167,7 @@ export async function POST(req: Request) {
         stage: "New",
         value: 0,
         risk_score: riskScore,
+        source: "priority_access",
         notes: additionalDetails,
         log: [
           {
