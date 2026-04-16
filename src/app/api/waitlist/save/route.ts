@@ -27,7 +27,6 @@ export async function POST(req: Request) {
       body: JSON.stringify({
         p_name: body.name,
         p_email: body.email,
-        p_source: "waitlist",
       }),
     });
 
