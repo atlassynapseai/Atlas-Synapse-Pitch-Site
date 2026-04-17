@@ -344,39 +344,95 @@ function buildInternalNotification(name: string, email: string): string {
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <style>
-    body { margin:0; padding:0; background:#0B0A1E; font-family:Arial,sans-serif; }
-    .wrap { max-width:520px; margin:0 auto; padding:32px 16px; }
-    .card { background:linear-gradient(160deg,#1C1658,#0F0C2E); border-radius:16px; border:1px solid rgba(129,140,248,0.15); overflow:hidden; }
-    .header { background:linear-gradient(135deg,#2D1B69,#1C1658); padding:24px 32px; text-align:center; }
-    .header img { height:40px; width:auto; display:block; margin:0 auto 12px; }
-    .header h2 { margin:0; font-size:18px; font-weight:700; color:#fff; }
-    .body { padding:24px 32px; }
-    .label { font-size:11px; font-weight:700; color:rgba(129,140,248,0.8); text-transform:uppercase; letter-spacing:1px; margin-bottom:4px; }
-    .value { font-size:15px; color:rgba(232,213,245,0.85); margin-bottom:16px; }
-    .badge { display:inline-block; background:rgba(129,140,248,0.15); border:1px solid rgba(129,140,248,0.3); border-radius:20px; padding:4px 14px; font-size:13px; font-weight:600; color:#818CF8; }
-    .divider { height:1px; background:rgba(129,140,248,0.12); margin:4px 0 20px; }
-    .footer { text-align:center; padding:0 32px 24px; font-size:12px; color:rgba(232,213,245,0.3); }
-  </style>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>New Waitlist Signup</title>
 </head>
-<body>
-  <div class="wrap">
-    <div class="card">
-      <div class="header">
-        <img src="https://atlassynapseai.com/logo.png" alt="Atlas Synapse" />
-        <h2>New Waitlist Signup</h2>
-      </div>
-      <div class="body">
-        <div class="label">Name</div>
-        <div class="value">${name}</div>
-        <div class="label">Email</div>
-        <div class="value"><a href="mailto:${email}" style="color:#818CF8;text-decoration:none;">${email}</a></div>
-        <div class="divider"></div>
-        <span class="badge">&#10003; Saved to Supabase</span>
-      </div>
-      <div class="footer">Sent automatically by atlassynapseai.com</div>
-    </div>
-  </div>
+<body style="margin:0;padding:0;background-color:#0B0A1E;font-family:Arial,Helvetica,sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#0B0A1E;padding:40px 20px;">
+    <tr>
+      <td align="center">
+        <table width="580" cellpadding="0" cellspacing="0" border="0" style="max-width:580px;width:100%;">
+
+          <!-- HEADER -->
+          <tr>
+            <td style="border-radius:20px 20px 0 0;background:linear-gradient(135deg,#2D1B69 0%,#1C1658 50%,#0F0B3A 100%);padding:36px 40px 28px;text-align:center;">
+              <img src="https://atlassynapseai.com/logo.png" alt="Atlas Synapse" width="56" height="56" style="display:block;margin:0 auto 16px;border-radius:12px;" />
+              <h1 style="margin:0 0 6px;font-size:22px;font-weight:800;color:#FFFFFF;letter-spacing:-0.3px;">New Waitlist Signup</h1>
+              <p style="margin:0;font-size:13px;color:#A78BFA;font-weight:600;letter-spacing:0.5px;text-transform:uppercase;">Atlas Synapse CRM Alert</p>
+            </td>
+          </tr>
+
+          <!-- ACCENT BAR -->
+          <tr>
+            <td style="height:3px;background:linear-gradient(90deg,#818CF8,#A78BFA,#C4B5FD,#818CF8);"></td>
+          </tr>
+
+          <!-- BODY -->
+          <tr>
+            <td style="background-color:#12103A;padding:32px 40px;">
+
+              <!-- Alert badge -->
+              <table cellpadding="0" cellspacing="0" border="0" style="margin-bottom:24px;">
+                <tr>
+                  <td style="background:rgba(129,140,248,0.12);border:1px solid rgba(129,140,248,0.3);border-radius:20px;padding:6px 16px;">
+                    <span style="font-size:13px;font-weight:700;color:#818CF8;">&#128276; Someone just joined the waitlist</span>
+                  </td>
+                </tr>
+              </table>
+
+              <!-- Details table -->
+              <table width="100%" cellpadding="0" cellspacing="0" border="0" style="border-radius:12px;overflow:hidden;border:1px solid #2D2566;margin-bottom:28px;">
+                <tr>
+                  <td style="padding:10px 16px;background-color:#1A1750;border-bottom:1px solid #2D2566;vertical-align:top;width:130px;">
+                    <span style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#818CF8;">Name</span>
+                  </td>
+                  <td style="padding:10px 16px;background-color:#1A1750;border-bottom:1px solid #2D2566;vertical-align:top;">
+                    <span style="font-size:14px;color:#E8D5F5;font-weight:500;">${name}</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding:10px 16px;background-color:#161340;border-bottom:1px solid #2D2566;vertical-align:top;">
+                    <span style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#818CF8;">Email</span>
+                  </td>
+                  <td style="padding:10px 16px;background-color:#161340;border-bottom:1px solid #2D2566;vertical-align:top;">
+                    <a href="mailto:${email}" style="font-size:14px;color:#818CF8;font-weight:500;text-decoration:none;">${email}</a>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding:10px 16px;background-color:#1A1750;vertical-align:top;">
+                    <span style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#818CF8;">Status</span>
+                  </td>
+                  <td style="padding:10px 16px;background-color:#1A1750;vertical-align:top;">
+                    <span style="font-size:14px;color:#818CF8;font-weight:700;">&#10003; Saved to Supabase</span>
+                  </td>
+                </tr>
+              </table>
+
+              <!-- CTA -->
+              <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <td align="center">
+                    <a href="mailto:${email}" style="display:inline-block;padding:13px 32px;background:linear-gradient(135deg,#2D1B69,#818CF8);color:#FFFFFF;font-size:14px;font-weight:700;text-decoration:none;border-radius:10px;letter-spacing:0.2px;">
+                      Reply to ${name} &rarr;
+                    </a>
+                  </td>
+                </tr>
+              </table>
+
+            </td>
+          </tr>
+
+          <!-- FOOTER -->
+          <tr>
+            <td style="background-color:#0D0B2A;border-radius:0 0 20px 20px;padding:18px 40px;text-align:center;border-top:1px solid #1E1B4B;">
+              <p style="margin:0;font-size:12px;color:#4B4680;">Sent automatically from <a href="https://atlassynapseai.com" style="color:#6D63B0;text-decoration:none;">atlassynapseai.com</a> &mdash; Waitlist Form</p>
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
 </body>
 </html>`;
 }
@@ -386,7 +442,7 @@ async function sendWaitlistEmails(name: string, email: string): Promise<void> {
     sendEmail([{ email, name }], "You're on the Atlas Synapse waitlist 🎉", buildConfirmationEmail(name, email)),
     sendEmail(
       [{ email: "company@atlassynapseai.com", name: "Atlas Synapse Team" }],
-      `New Waitlist Signup: ${name} (${email})`,
+      `🔔 New Waitlist Signup: ${name} (${email})`,
       buildInternalNotification(name, email)
     ),
   ]);
