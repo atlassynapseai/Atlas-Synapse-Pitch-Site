@@ -209,15 +209,6 @@ export function WaitlistSignupForm({ skin, className }: { skin: Skin; className?
                 {state === "loading" ? <span className="h-5 w-5 animate-spin rounded-full border-2 border-white/30 border-t-white" /> : "Join the waitlist"}
               </button>
             </form>
-            <p className={`mt-5 text-center text-[13px] ${isDark ? "text-[#E8D5F5]/45" : "text-slate-600 dark:text-slate-400"}`}>
-              Need a faster lane?{" "}
-              <a
-                href={PRIORITY_HREF}
-                className={`font-semibold underline decoration-1 underline-offset-4 ${isDark ? "text-[#C4B5FD] decoration-[#C4B5FD]/40 hover:text-white" : "text-[#1A3A5C] decoration-[#1A3A5C]/30 hover:underline dark:text-[#A78BFA]"}`}
-              >
-                Request priority access
-              </a>
-            </p>
           </motion.div>
         ) : (
           <motion.div
