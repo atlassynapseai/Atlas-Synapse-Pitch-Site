@@ -4,5 +4,16 @@
       "source": "/Atlas-Synapse-CRM/:path*",
       "destination": "https://atlas-synapse-crm.vercel.app/:path*"
     }
+  ],
+  "headers": [
+    {
+      "source": "/:path*",
+      "headers": [
+        {
+          "key": "x-forwarded-proto",
+          "value": "https"
+        }
+      ]
+    }
   ]
 }
