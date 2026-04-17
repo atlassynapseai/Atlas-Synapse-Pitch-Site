@@ -552,7 +552,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ ok: false, error: "Database not configured" }, { status: 500, headers: cors() });
     }
 
-    // -- Save to Supabase ---------------------------------------------------
+    // -- Save to Supabase (non-fatal) ---------------------------------------
     console.log("[waitlist/save] Saving signup:", email);
     const rpcRes = await fetch(`${supabaseUrl}/rest/v1/rpc/insert_waitlist_signup`, {
       method: "POST",
@@ -567,15 +567,14 @@ export async function POST(req: Request) {
       let errMsg = "Failed to save";
       try { errMsg = (JSON.parse(rpcText) as { message?: string }).message ?? errMsg; } catch { /* */ }
       console.error("[waitlist/save] Supabase error:", errMsg);
-      return NextResponse.json({ ok: false, error: errMsg }, { status: rpcRes.status, headers: cors() });
+      // Still send emails — don't block on Supabase errors (e.g. duplicate)
     }
 
-    // -- Send emails (awaited so Vercel doesn't kill the Promise) -----------
+    // -- Send emails (always, as long as input is valid) -------------------
     console.log("[waitlist/save] Sending emails for:", email);
     try {
       await sendWaitlistEmails(name, email);
     } catch (e) {
-      // Non-fatal — signup succeeded, log the error
       console.error("[waitlist/save] Email send threw:", e);
     }
 
