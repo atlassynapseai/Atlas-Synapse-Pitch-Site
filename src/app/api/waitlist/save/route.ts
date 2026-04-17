@@ -34,6 +34,18 @@ function sanitize(val: unknown): string {
 }
 
 // ---------------------------------------------------------------------------
+// HTML entity encoding — safe interpolation into HTML attributes & content
+// ---------------------------------------------------------------------------
+function esc(val: string): string {
+  return val
+    .replace(/&/g, "&amp;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#x27;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+}
+
+// ---------------------------------------------------------------------------
 // CORS
 // ---------------------------------------------------------------------------
 function cors() {
@@ -49,6 +61,8 @@ export async function OPTIONS() {
 }
 
 function buildConfirmationEmail(name: string, email: string): string {
+  const safeName = esc(name);
+  const safeEmail = esc(email);
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -297,7 +311,7 @@ function buildConfirmationEmail(name: string, email: string): string {
 
       <!-- Body -->
       <div class="body">
-        <p class="greeting">Hey ${name},</p>
+        <p class="greeting">Hey ${safeName},</p>
         <p class="body-text">
           Thanks for joining the Atlas Synapse waitlist! We're building the AI observability platform
           that helps teams monitor, audit, and optimise every AI agent and LLM call in their stack.
@@ -309,11 +323,11 @@ function buildConfirmationEmail(name: string, email: string): string {
           <table>
             <tr>
               <td>Name</td>
-              <td>${name}</td>
+              <td>${safeName}</td>
             </tr>
             <tr>
               <td>Email</td>
-              <td>${email}</td>
+              <td>${safeEmail}</td>
             </tr>
             <tr>
               <td>Status</td>
@@ -391,6 +405,8 @@ async function sendEmail(to: { email: string; name: string }[], subject: string,
 }
 
 function buildInternalNotification(name: string, email: string): string {
+  const safeName = esc(name);
+  const safeEmail = esc(email);
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -438,7 +454,7 @@ function buildInternalNotification(name: string, email: string): string {
                     <span style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#818CF8;">Name</span>
                   </td>
                   <td style="padding:10px 16px;background-color:#1A1750;border-bottom:1px solid #2D2566;vertical-align:top;">
-                    <span style="font-size:14px;color:#E8D5F5;font-weight:500;">${name}</span>
+                    <span style="font-size:14px;color:#E8D5F5;font-weight:500;">${safeName}</span>
                   </td>
                 </tr>
                 <tr>
@@ -446,7 +462,7 @@ function buildInternalNotification(name: string, email: string): string {
                     <span style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#818CF8;">Email</span>
                   </td>
                   <td style="padding:10px 16px;background-color:#161340;border-bottom:1px solid #2D2566;vertical-align:top;">
-                    <a href="mailto:${email}" style="font-size:14px;color:#818CF8;font-weight:500;text-decoration:none;">${email}</a>
+                    <a href="mailto:${safeEmail}" style="font-size:14px;color:#818CF8;font-weight:500;text-decoration:none;">${safeEmail}</a>
                   </td>
                 </tr>
                 <tr>
@@ -463,8 +479,8 @@ function buildInternalNotification(name: string, email: string): string {
               <table width="100%" cellpadding="0" cellspacing="0" border="0">
                 <tr>
                   <td align="center">
-                    <a href="mailto:${email}" style="display:inline-block;padding:13px 32px;background:linear-gradient(135deg,#2D1B69,#818CF8);color:#FFFFFF;font-size:14px;font-weight:700;text-decoration:none;border-radius:10px;letter-spacing:0.2px;">
-                      Reply to ${name} &rarr;
+                    <a href="mailto:${safeEmail}" style="display:inline-block;padding:13px 32px;background:linear-gradient(135deg,#2D1B69,#818CF8);color:#FFFFFF;font-size:14px;font-weight:700;text-decoration:none;border-radius:10px;letter-spacing:0.2px;">
+                      Reply to ${safeName} &rarr;
                     </a>
                   </td>
                 </tr>
