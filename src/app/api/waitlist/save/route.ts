@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 // Rate limiting (in-memory, resets on cold start)
 // ---------------------------------------------------------------------------
 const emailHits = new Map<string, { count: number; resetAt: number }>();
-const ipHits    = new Map<string, { count: number; resetAt: number }>();
+const ipHits = new Map<string, { count: number; resetAt: number }>();
 
 function checkRateLimit(
   key: string,
@@ -531,7 +531,7 @@ export async function POST(req: Request) {
     const body = await req.json();
 
     // -- Sanitize & validate inputs -----------------------------------------
-    const name  = sanitize(body.name);
+    const name = sanitize(body.name);
     const email = sanitize(body.email).toLowerCase();
 
     if (!name || name.length < 2) {
@@ -562,7 +562,7 @@ export async function POST(req: Request) {
     }
 
     // -- Supabase env check -------------------------------------------------
-    const supabaseUrl     = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
     const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
     if (!supabaseUrl || !supabaseAnonKey) {
