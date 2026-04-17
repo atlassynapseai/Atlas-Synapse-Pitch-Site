@@ -1,5 +1,51 @@
 import { NextResponse } from "next/server";
 
+// ---------------------------------------------------------------------------
+// Rate limiting (in-memory, resets on cold start)
+// ---------------------------------------------------------------------------
+const emailHits = new Map<string, { count: number; resetAt: number }>();
+const ipHits    = new Map<string, { count: number; resetAt: number }>();
+
+function checkRateLimit(
+  key: string,
+  store: Map<string, { count: number; resetAt: number }>,
+  limit: number,
+  windowMs: number
+): boolean {
+  const now = Date.now();
+  const entry = store.get(key);
+  if (!entry || now > entry.resetAt) {
+    store.set(key, { count: 1, resetAt: now + windowMs });
+    return true;
+  }
+  if (entry.count >= limit) return false;
+  entry.count++;
+  return true;
+}
+
+// ---------------------------------------------------------------------------
+// Input sanitization — strip HTML/script tags
+// ---------------------------------------------------------------------------
+function sanitize(val: unknown): string {
+  if (typeof val !== "string") return "";
+  return val.replace(/<[^>]*>/g, "").trim().slice(0, 320);
+}
+
+// ---------------------------------------------------------------------------
+// CORS
+// ---------------------------------------------------------------------------
+function cors() {
+  return {
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Methods": "POST, OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type",
+  };
+}
+
+export async function OPTIONS() {
+  return new Response(null, { status: 204, headers: cors() });
+}
+
 function buildConfirmationEmail(name: string, email: string): string {
   return `<!DOCTYPE html>
 <html lang="en">
@@ -316,10 +362,10 @@ function buildConfirmationEmail(name: string, email: string): string {
 async function sendEmail(to: { email: string; name: string }[], subject: string, html: string): Promise<void> {
   const apiKey = process.env.BREVO_API_KEY ?? process.env.VITE_BREVO_API_KEY;
   if (!apiKey) {
-    console.error("[waitlist/save] BREVO_API_KEY is not set — cannot send email");
+    console.error("[waitlist/save] No BREVO_API_KEY — email skipped");
     return;
   }
-  console.log(`[waitlist/save] Sending email to: ${to.map(t => t.email).join(", ")} | subject: ${subject}`);
+  console.log(`[waitlist/save] Sending to: ${to.map(t => t.email).join(", ")}`);
   const res = await fetch("https://api.brevo.com/v3/smtp/email", {
     method: "POST",
     headers: {
@@ -334,11 +380,11 @@ async function sendEmail(to: { email: string; name: string }[], subject: string,
       htmlContent: html,
     }),
   });
+  const responseBody = await res.text();
   if (!res.ok) {
-    const err = await res.text();
-    console.error(`[waitlist/save] Brevo error ${res.status}:`, err);
+    console.error(`[waitlist/save] Brevo ${res.status}:`, responseBody);
   } else {
-    console.log(`[waitlist/save] Email sent successfully to: ${to.map(t => t.email).join(", ")}`);
+    console.log(`[waitlist/save] Email sent OK (${res.status}):`, responseBody.slice(0, 120));
   }
 }
 
@@ -453,66 +499,89 @@ async function sendWaitlistEmails(name: string, email: string): Promise<void> {
 
 export async function POST(req: Request) {
   try {
+    // -- Method guard -------------------------------------------------------
+    if (req.method && req.method !== "POST") {
+      return NextResponse.json({ ok: false, error: "Method not allowed" }, { status: 405, headers: cors() });
+    }
+
+    // -- Body size guard (prevent large payload attacks) --------------------
+    const contentLength = req.headers.get("content-length");
+    if (contentLength && parseInt(contentLength) > 5000) {
+      return NextResponse.json({ ok: false, error: "Payload too large" }, { status: 413, headers: cors() });
+    }
+
     const body = await req.json();
 
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    // -- Sanitize & validate inputs -----------------------------------------
+    const name  = sanitize(body.name);
+    const email = sanitize(body.email).toLowerCase();
+
+    if (!name || name.length < 2) {
+      return NextResponse.json({ ok: false, error: "Invalid name" }, { status: 400, headers: cors() });
+    }
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      return NextResponse.json({ ok: false, error: "Invalid email" }, { status: 400, headers: cors() });
+    }
+
+    // -- Rate limiting -------------------------------------------------------
+    const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim()
+      ?? req.headers.get("x-real-ip")
+      ?? "unknown";
+
+    if (!checkRateLimit(email, emailHits, 3, 24 * 60 * 60 * 1000)) {
+      console.warn(`[waitlist/save] Email rate limit hit: ${email}`);
+      return NextResponse.json(
+        { ok: false, error: "You're already on the waitlist." },
+        { status: 429, headers: cors() }
+      );
+    }
+    if (!checkRateLimit(ip, ipHits, 15, 60 * 60 * 1000)) {
+      console.warn(`[waitlist/save] IP rate limit hit: ${ip}`);
+      return NextResponse.json(
+        { ok: false, error: "Too many requests. Please try again later." },
+        { status: 429, headers: cors() }
+      );
+    }
+
+    // -- Supabase env check -------------------------------------------------
+    const supabaseUrl     = process.env.NEXT_PUBLIC_SUPABASE_URL;
     const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
     if (!supabaseUrl || !supabaseAnonKey) {
-      console.error("Supabase credentials missing");
-      return NextResponse.json(
-        { ok: false, error: "Database not configured" },
-        { status: 500 }
-      );
+      console.error("[waitlist/save] Supabase credentials missing");
+      return NextResponse.json({ ok: false, error: "Database not configured" }, { status: 500, headers: cors() });
     }
 
-    console.log("Calling insert_waitlist_signup function:", body.email);
-
-    // Call the stored function via RPC
-    const response = await fetch(`${supabaseUrl}/rest/v1/rpc/insert_waitlist_signup`, {
+    // -- Save to Supabase ---------------------------------------------------
+    console.log("[waitlist/save] Saving signup:", email);
+    const rpcRes = await fetch(`${supabaseUrl}/rest/v1/rpc/insert_waitlist_signup`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "apikey": supabaseAnonKey,
-      },
-      body: JSON.stringify({
-        p_name: body.name,
-        p_email: body.email,
-      }),
+      headers: { "Content-Type": "application/json", apikey: supabaseAnonKey },
+      body: JSON.stringify({ p_name: name, p_email: email }),
     });
 
-    const responseText = await response.text();
-    console.log("Supabase REST response:", response.status, responseText);
+    const rpcText = await rpcRes.text();
+    console.log("[waitlist/save] Supabase response:", rpcRes.status, rpcText);
 
-    if (!response.ok) {
-      let errorMsg = "Failed to save";
-      try {
-        const errorData = JSON.parse(responseText);
-        errorMsg = errorData.message || errorData.error_description || errorMsg;
-      } catch (e) {
-        errorMsg = responseText || errorMsg;
-      }
-      console.error("REST API error:", errorMsg);
-      return NextResponse.json(
-        { ok: false, error: errorMsg },
-        { status: response.status }
-      );
+    if (!rpcRes.ok) {
+      let errMsg = "Failed to save";
+      try { errMsg = (JSON.parse(rpcText) as { message?: string }).message ?? errMsg; } catch { /* */ }
+      console.error("[waitlist/save] Supabase error:", errMsg);
+      return NextResponse.json({ ok: false, error: errMsg }, { status: rpcRes.status, headers: cors() });
     }
 
-    console.log("Successfully saved waitlist signup");
-    // Await emails before returning — fire-and-forget is killed by Vercel before completing
+    // -- Send emails (awaited so Vercel doesn't kill the Promise) -----------
+    console.log("[waitlist/save] Sending emails for:", email);
     try {
-      await sendWaitlistEmails(body.name ?? "", body.email ?? "");
+      await sendWaitlistEmails(name, email);
     } catch (e) {
-      console.error("Waitlist email error:", e);
-      // Non-fatal — signup succeeded even if email fails
+      // Non-fatal — signup succeeded, log the error
+      console.error("[waitlist/save] Email send threw:", e);
     }
-    return NextResponse.json({ ok: true });
+
+    return NextResponse.json({ ok: true }, { headers: cors() });
   } catch (error) {
-    console.error("Waitlist save error:", error);
-    return NextResponse.json(
-      { ok: false, error: "Failed to process request" },
-      { status: 500 }
-    );
+    console.error("[waitlist/save] Unhandled error:", error);
+    return NextResponse.json({ ok: false, error: "Failed to process request" }, { status: 500, headers: cors() });
   }
 }
