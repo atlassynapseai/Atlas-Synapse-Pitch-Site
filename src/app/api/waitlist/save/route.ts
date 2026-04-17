@@ -441,10 +441,13 @@ export async function POST(req: Request) {
     }
 
     console.log("Successfully saved waitlist signup");
-    // Send confirmation to user + internal notification to company (non-blocking)
-    sendWaitlistEmails(body.name ?? "", body.email ?? "").catch((e) =>
-      console.error("Waitlist email error:", e)
-    );
+    // Await emails before returning — fire-and-forget is killed by Vercel before completing
+    try {
+      await sendWaitlistEmails(body.name ?? "", body.email ?? "");
+    } catch (e) {
+      console.error("Waitlist email error:", e);
+      // Non-fatal — signup succeeded even if email fails
+    }
     return NextResponse.json({ ok: true });
   } catch (error) {
     console.error("Waitlist save error:", error);
