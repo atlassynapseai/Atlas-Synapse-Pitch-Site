@@ -125,12 +125,14 @@ export async function POST(req: Request) {
       );
     }
     // Structural email check — O(n), immune to ReDoS (no backtracking quantifiers).
+    // Equivalent to the original regex without the polynomial backtracking risk.
     const atIdx = email.indexOf("@");
     const validEmailShape =
       atIdx > 0 &&
       atIdx === email.lastIndexOf("@") &&
       email.indexOf(".", atIdx) > atIdx + 1 &&
-      !email.endsWith(".");
+      !email.endsWith(".") &&
+      !/\s/.test(email);
     if (!email || !validEmailShape) {
       return NextResponse.json(
         { success: false, message: "A valid email is required." },
