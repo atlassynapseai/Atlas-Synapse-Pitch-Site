@@ -28,7 +28,9 @@ function checkRateLimit(
 // ---------------------------------------------------------------------------
 function sanitize(val: unknown): string {
   if (typeof val !== "string") return "";
-  return val.replace(/<[^>]*>/g, "").trim().slice(0, 320);
+  // Remove < and > individually (linear scan, no backtracking) instead of
+  // /<[^>]*>/g which is O(n²) on inputs with many consecutive '<' characters.
+  return val.replace(/[<>]/g, "").trim().slice(0, 320);
 }
 
 // ---------------------------------------------------------------------------

@@ -124,7 +124,14 @@ export async function POST(req: Request) {
         { status: 400, headers: corsHeaders() }
       );
     }
-    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    // Structural email check — O(n), immune to ReDoS (no backtracking quantifiers).
+    const atIdx = email.indexOf("@");
+    const validEmailShape =
+      atIdx > 0 &&
+      atIdx === email.lastIndexOf("@") &&
+      email.indexOf(".", atIdx) > atIdx + 1 &&
+      !email.endsWith(".");
+    if (!email || !validEmailShape) {
       return NextResponse.json(
         { success: false, message: "A valid email is required." },
         { status: 400, headers: corsHeaders() }
