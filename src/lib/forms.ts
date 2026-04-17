@@ -8,6 +8,7 @@ export interface PriorityAccessFormData {
   hearAboutUs?: string;
   currency?: string;
   additionalDetails?: string;
+  phone?: string;
 }
 
 export interface SubmitLeadResult {

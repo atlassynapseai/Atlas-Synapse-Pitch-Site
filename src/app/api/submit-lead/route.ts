@@ -90,6 +90,7 @@ export async function POST(req: Request) {
       hearAboutUs?: string;
       currency?: string;
       additionalDetails?: string;
+      phone?: string;
     };
 
     // -- Validate required fields ------------------------------------------
@@ -141,6 +142,7 @@ export async function POST(req: Request) {
     const aiUseCase = (body.aiUseCase ?? "").trim();
     const hearAboutUs = (body.hearAboutUs ?? "").trim();
     const additionalDetails = (body.additionalDetails ?? "").trim();
+    const phone = (body.phone ?? "").trim();
 
     const riskScore = calcRiskScore(role, aiUseCase);
     const name = [firstName, lastName].filter(Boolean).join(" ");
@@ -161,7 +163,7 @@ export async function POST(req: Request) {
         name,
         email,
         company,
-        phone: "",
+        phone,
         industry: "",
         ai_tools: aiUseCase,
         stage: "New",
