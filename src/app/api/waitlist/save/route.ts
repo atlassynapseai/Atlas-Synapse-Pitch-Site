@@ -314,11 +314,12 @@ function buildConfirmationEmail(name: string, email: string): string {
 }
 
 async function sendEmail(to: { email: string; name: string }[], subject: string, html: string): Promise<void> {
-  const apiKey = process.env.BREVO_API_KEY;
+  const apiKey = process.env.BREVO_API_KEY ?? process.env.VITE_BREVO_API_KEY;
   if (!apiKey) {
-    console.warn("BREVO_API_KEY not set — skipping email");
+    console.error("[waitlist/save] BREVO_API_KEY is not set — cannot send email");
     return;
   }
+  console.log(`[waitlist/save] Sending email to: ${to.map(t => t.email).join(", ")} | subject: ${subject}`);
   const res = await fetch("https://api.brevo.com/v3/smtp/email", {
     method: "POST",
     headers: {
@@ -335,7 +336,9 @@ async function sendEmail(to: { email: string; name: string }[], subject: string,
   });
   if (!res.ok) {
     const err = await res.text();
-    console.error("Brevo email error:", res.status, err);
+    console.error(`[waitlist/save] Brevo error ${res.status}:`, err);
+  } else {
+    console.log(`[waitlist/save] Email sent successfully to: ${to.map(t => t.email).join(", ")}`);
   }
 }
 
