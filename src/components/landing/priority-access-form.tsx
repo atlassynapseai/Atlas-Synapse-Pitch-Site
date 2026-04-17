@@ -262,6 +262,7 @@ async function sendEmail(data: {
   aiTasksPrimary: string;
   aiTasks: string;
   aiTasksOther: string;
+  phone?: string;
 }) {
   try {
     const res = await fetch("/api/priority-access/send-email", {
@@ -437,6 +438,7 @@ export function PriorityAccessForm({ skin = "dark", className }: { skin?: Skin; 
         aiTasksPrimary: formData.aiTasksPrimary,
         aiTasks: formData.aiTasks,
         aiTasksOther: formData.aiTasksOther,
+        phone: formData.phone.trim() ? `${formData.phoneCode} ${formData.phone.trim()}` : "",
       });
 
       // Create CRM lead with risk scoring + send user confirmation email
