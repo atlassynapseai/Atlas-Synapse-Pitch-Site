@@ -313,10 +313,10 @@ function buildConfirmationEmail(name: string, email: string): string {
 </html>`;
 }
 
-async function sendConfirmationEmail(name: string, email: string): Promise<void> {
+async function sendEmail(to: { email: string; name: string }[], subject: string, html: string): Promise<void> {
   const apiKey = process.env.BREVO_API_KEY;
   if (!apiKey) {
-    console.warn("BREVO_API_KEY not set — skipping confirmation email");
+    console.warn("BREVO_API_KEY not set — skipping email");
     return;
   }
   const res = await fetch("https://api.brevo.com/v3/smtp/email", {
@@ -328,15 +328,68 @@ async function sendConfirmationEmail(name: string, email: string): Promise<void>
     },
     body: JSON.stringify({
       sender: { name: "Atlas Synapse", email: "company@atlassynapseai.com" },
-      to: [{ email, name }],
-      subject: "You're on the Atlas Synapse waitlist 🎉",
-      htmlContent: buildConfirmationEmail(name, email),
+      to,
+      subject,
+      htmlContent: html,
     }),
   });
   if (!res.ok) {
     const err = await res.text();
-    console.error("Brevo waitlist confirmation error:", res.status, err);
+    console.error("Brevo email error:", res.status, err);
   }
+}
+
+function buildInternalNotification(name: string, email: string): string {
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <style>
+    body { margin:0; padding:0; background:#0B0A1E; font-family:Arial,sans-serif; }
+    .wrap { max-width:520px; margin:0 auto; padding:32px 16px; }
+    .card { background:linear-gradient(160deg,#1C1658,#0F0C2E); border-radius:16px; border:1px solid rgba(129,140,248,0.15); overflow:hidden; }
+    .header { background:linear-gradient(135deg,#2D1B69,#1C1658); padding:24px 32px; text-align:center; }
+    .header img { height:40px; width:auto; display:block; margin:0 auto 12px; }
+    .header h2 { margin:0; font-size:18px; font-weight:700; color:#fff; }
+    .body { padding:24px 32px; }
+    .label { font-size:11px; font-weight:700; color:rgba(129,140,248,0.8); text-transform:uppercase; letter-spacing:1px; margin-bottom:4px; }
+    .value { font-size:15px; color:rgba(232,213,245,0.85); margin-bottom:16px; }
+    .badge { display:inline-block; background:rgba(129,140,248,0.15); border:1px solid rgba(129,140,248,0.3); border-radius:20px; padding:4px 14px; font-size:13px; font-weight:600; color:#818CF8; }
+    .divider { height:1px; background:rgba(129,140,248,0.12); margin:4px 0 20px; }
+    .footer { text-align:center; padding:0 32px 24px; font-size:12px; color:rgba(232,213,245,0.3); }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <div class="header">
+        <img src="https://atlassynapseai.com/logo.png" alt="Atlas Synapse" />
+        <h2>New Waitlist Signup</h2>
+      </div>
+      <div class="body">
+        <div class="label">Name</div>
+        <div class="value">${name}</div>
+        <div class="label">Email</div>
+        <div class="value"><a href="mailto:${email}" style="color:#818CF8;text-decoration:none;">${email}</a></div>
+        <div class="divider"></div>
+        <span class="badge">&#10003; Saved to Supabase</span>
+      </div>
+      <div class="footer">Sent automatically by atlassynapseai.com</div>
+    </div>
+  </div>
+</body>
+</html>`;
+}
+
+async function sendWaitlistEmails(name: string, email: string): Promise<void> {
+  await Promise.all([
+    sendEmail([{ email, name }], "You're on the Atlas Synapse waitlist 🎉", buildConfirmationEmail(name, email)),
+    sendEmail(
+      [{ email: "company@atlassynapseai.com", name: "Atlas Synapse Team" }],
+      `New Waitlist Signup: ${name} (${email})`,
+      buildInternalNotification(name, email)
+    ),
+  ]);
 }
 
 export async function POST(req: Request) {
@@ -388,9 +441,9 @@ export async function POST(req: Request) {
     }
 
     console.log("Successfully saved waitlist signup");
-    // Send confirmation email to the user (non-blocking — don't fail the request if email errors)
-    sendConfirmationEmail(body.name ?? "", body.email ?? "").catch((e) =>
-      console.error("Confirmation email error:", e)
+    // Send confirmation to user + internal notification to company (non-blocking)
+    sendWaitlistEmails(body.name ?? "", body.email ?? "").catch((e) =>
+      console.error("Waitlist email error:", e)
     );
     return NextResponse.json({ ok: true });
   } catch (error) {
