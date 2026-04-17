@@ -22,7 +22,7 @@ export function FloatingPill() {
           className="fixed bottom-5 right-5 z-50 flex h-[48px] items-center gap-2 rounded-full border border-[#818CF8]/25 px-5 text-[13px] font-bold text-white shadow-lg"
           style={{ background: "linear-gradient(135deg, #2D1B69, #818CF8)" }}>
           <span className="pointer-events-none absolute inset-0 rounded-full border border-[#818CF8]/20" style={{ animation: "pill-ring 4s ease-out infinite" }} />
-          Join Beta
+          Get Notified
           <span className="flex h-5 w-5 items-center justify-center rounded-full bg-white/15"><ArrowUpRight className="h-3 w-3" /></span>
         </motion.button>
       )}

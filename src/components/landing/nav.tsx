@@ -20,17 +20,17 @@ export function Nav() {
           <span className="text-[14px] font-bold tracking-tight text-white">Atlas Synapse</span>
         </Link>
         <nav className="hidden items-center gap-4 md:flex">
+          <a href="#where-we-fit" className="text-[13px] font-medium text-[#E8D5F5]/60 transition-colors hover:text-white">Features</a>
           <a href="#how" className="text-[13px] font-medium text-[#E8D5F5]/60 transition-colors hover:text-white">How It Works</a>
           <a href="#sneak-peek" className="text-[13px] font-medium text-[#E8D5F5]/60 transition-colors hover:text-white">See It</a>
-          <a href="#waitlist" className="text-[13px] font-medium text-[#E8D5F5]/60 transition-colors hover:text-white">Join Beta</a>
           <a href="#waitlist" className="rounded-[10px] px-4 py-1.5 text-[13px] font-bold text-white transition-transform hover:scale-[1.03]"
             style={{ background: "linear-gradient(135deg, #F59E0B, #EF4444)" }}>
-            Join Waitlist
+            Get Notified
           </a>
         </nav>
         <a href="#waitlist" className="rounded-[10px] px-3 py-1.5 text-[13px] font-bold text-white md:hidden"
           style={{ background: "linear-gradient(135deg, #F59E0B, #EF4444)" }}>
-          Join Waitlist
+          Get Notified
         </a>
       </div>
     </motion.header>

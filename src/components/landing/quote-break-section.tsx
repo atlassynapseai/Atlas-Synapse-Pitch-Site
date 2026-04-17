@@ -1,241 +1,106 @@
 "use client";
 
 import * as React from "react";
-import { motion, useReducedMotion } from "framer-motion";
-import { cn } from "@/lib/utils";
+import { motion } from "framer-motion";
+import { SectionHeader } from "./section-header";
 
-const QUOTE_BG = "#1A1520";
+const E: [number, number, number, number] = [0.16, 1, 0.3, 1];
+const BG = "#1A1520";
 
-type WordItem = {
-  text: string;
-  tier: 1 | 2 | 3;
-  line: 1 | 2;
-  highlight?: "gold" | "purple";
-  color?: string;
+type Principle = {
+  num: string;
+  headline: string;
+  body: string;
+  detail: string;
+  accent: string;
 };
 
-const words: WordItem[] = [
-  { text: "If", tier: 1, line: 1 },
-  { text: "you'd", tier: 1, line: 1 },
-  { text: "never", tier: 2, line: 1 },
-  { text: "skip", tier: 2, line: 1 },
-  { text: "HR", tier: 3, line: 1, highlight: "gold" },
-  { text: "for", tier: 1, line: 1 },
-  { text: "your", tier: 1, line: 1 },
-  { text: "team,", tier: 2, line: 1 },
-  { text: "don't", tier: 3, line: 2, color: "#E24B4A" },
-  { text: "skip", tier: 2, line: 2 },
-  { text: "it", tier: 1, line: 2 },
-  { text: "for", tier: 1, line: 2 },
-  { text: "your AI", tier: 3, line: 2, highlight: "purple" },
-];
-
-/** Desktop cumulative start delays (ms) — matches spec sequence + breaths + line gap */
-const DELAYS_MS_DESKTOP = [0, 30, 70, 110, 170, 200, 230, 270, 360, 400, 430, 460, 530];
-
-/** Mobile: shorter drops, faster stagger, ~0.8s total feel */
-const DELAYS_MS_MOBILE = [0, 20, 46, 72, 118, 138, 158, 188, 248, 276, 298, 318, 368];
-
-const tierConfig = {
-  1: {
-    spring: { type: "spring" as const, damping: 14, stiffness: 400, mass: 0.2 },
-    staggerMs: 30,
-    yDesktop: -12,
-    yMobile: -8,
-    opacityTo: 0.7,
-    scaleFrom: 1,
-    scaleTo: 1,
+const principles: Principle[] = [
+  {
+    num: "01",
+    headline: "Plain English over JSON.",
+    body: "Every flagged failure becomes a 2-3 sentence summary at a 10th-grade reading level. Identity stripped. Business impact first.",
+    detail: "Example: \"Your bot told a customer the return window is 60 days. Your policy says 30.\" Not a hallucination score.",
+    accent: "#A78BFA",
   },
-  2: {
-    spring: { type: "spring" as const, damping: 10, stiffness: 300, mass: 0.4 },
-    staggerMs: 40,
-    yDesktop: -25,
-    yMobile: -16,
-    opacityTo: 1,
-    scaleFrom: 0.95,
-    scaleTo: 1,
+  {
+    num: "02",
+    headline: "Built for the person who buys AI, not the person who builds it.",
+    body: "Galileo, LangSmith, and Arize ship developer consoles. Atlas Synapse ships an HR dashboard for AI agents. Same data, business-owner surface.",
+    detail: "Configurable by a salon owner or office manager. Zero code from the buyer.",
+    accent: "#F59E0B",
   },
-  3: {
-    spring: { type: "spring" as const, damping: 7, stiffness: 250, mass: 0.7 },
-    staggerMs: 40,
-    yDesktop: -40,
-    yMobile: -24,
-    opacityTo: 1,
-    scaleFrom: 0.88,
-    scaleTo: 1,
+  {
+    num: "03",
+    headline: "Catch it before the customer does.",
+    body: "Silent failure detection runs on every agent output, post-deploy, in production. Email arrives within 5 minutes of the incident.",
+    detail: "Severity tiered. Deduplicated. Linked to the trace. Plain-English description in the email itself.",
+    accent: "#8FA4B8",
   },
-};
-
-type Particle = { left: string; top: string; size: number; gold: boolean; duration: number; delay: number; dx: string; dy: string };
-
-const PARTICLES_DESKTOP: Particle[] = [
-  { left: "8%", top: "18%", size: 5, gold: true, duration: 18, delay: 0, dx: "14px", dy: "-10px" },
-  { left: "22%", top: "72%", size: 4, gold: false, duration: 22, delay: 1.2, dx: "-10px", dy: "12px" },
-  { left: "78%", top: "12%", size: 6, gold: true, duration: 16, delay: 0.4, dx: "12px", dy: "14px" },
-  { left: "88%", top: "55%", size: 4, gold: false, duration: 24, delay: 2, dx: "-14px", dy: "-8px" },
-  { left: "14%", top: "45%", size: 5, gold: false, duration: 20, delay: 0.8, dx: "8px", dy: "10px" },
-  { left: "42%", top: "8%", size: 4, gold: true, duration: 19, delay: 1.5, dx: "-12px", dy: "8px" },
-  { left: "55%", top: "82%", size: 5, gold: false, duration: 17, delay: 0.2, dx: "10px", dy: "-12px" },
-  { left: "92%", top: "28%", size: 4, gold: true, duration: 21, delay: 2.4, dx: "-8px", dy: "14px" },
-  { left: "65%", top: "38%", size: 5, gold: true, duration: 23, delay: 1, dx: "12px", dy: "10px" },
-  { left: "30%", top: "88%", size: 4, gold: false, duration: 15, delay: 1.8, dx: "-10px", dy: "-10px" },
 ];
-
-const PARTICLES_MOBILE: Particle[] = [
-  { left: "12%", top: "22%", size: 3, gold: true, duration: 16, delay: 0, dx: "10px", dy: "-8px" },
-  { left: "78%", top: "18%", size: 3, gold: false, duration: 18, delay: 0.6, dx: "-8px", dy: "8px" },
-  { left: "50%", top: "78%", size: 2, gold: true, duration: 17, delay: 1.2, dx: "8px", dy: "10px" },
-  { left: "88%", top: "55%", size: 3, gold: false, duration: 15, delay: 0.3, dx: "-10px", dy: "-6px" },
-  { left: "25%", top: "60%", size: 2, gold: false, duration: 19, delay: 1.5, dx: "6px", dy: "-8px" },
-];
-
-function PillGold({ children }: { children: React.ReactNode }) {
-  return (
-    <span className="quote-pill-gold inline-block rounded-lg border border-[rgba(232,168,56,0.4)] bg-[rgba(232,168,56,0.2)] px-2.5 py-0.5 text-[#E8A838]">
-      {children}
-    </span>
-  );
-}
-
-function PillPurple({ children }: { children: React.ReactNode }) {
-  return (
-    <span className="quote-pill-purple inline-block rounded-lg border border-[rgba(127,119,221,0.4)] bg-[rgba(127,119,221,0.2)] px-2.5 py-0.5 text-[#7F77DD]">
-      {children}
-    </span>
-  );
-}
-
-function ParticleField({ particles }: { particles: Particle[] }) {
-  return (
-    <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden>
-      {particles.map((p, i) => (
-        <span
-          key={i}
-          className="quote-particle absolute rounded-full"
-          style={
-            {
-              left: p.left,
-              top: p.top,
-              width: p.size,
-              height: p.size,
-              background: p.gold ? "rgba(232,168,56,0.15)" : "rgba(127,119,221,0.15)",
-              "--dx": p.dx,
-              "--dy": p.dy,
-              animationDuration: `${p.duration}s`,
-              animationDelay: `${p.delay}s`,
-            } as React.CSSProperties
-          }
-        />
-      ))}
-    </div>
-  );
-}
 
 export function QuoteBreakSection() {
-  const reduceMotion = useReducedMotion();
-  /** Avoid hydration mismatch: assume desktop until mounted, then read matchMedia. */
-  const [mobile, setMobile] = React.useState(false);
-  React.useEffect(() => {
-    const mq = window.matchMedia("(max-width: 767px)");
-    const fn = () => setMobile(mq.matches);
-    fn();
-    mq.addEventListener("change", fn);
-    return () => mq.removeEventListener("change", fn);
-  }, []);
-
-  const delaysMs = mobile ? DELAYS_MS_MOBILE : DELAYS_MS_DESKTOP;
-  const lastWordStartSec = delaysMs[delaysMs.length - 1]! / 1000;
-  const attributionDelaySec = reduceMotion ? 0.06 : lastWordStartSec + 0.72 + 0.2;
-
   return (
-    <section
-      id="quote-break"
-      className="relative isolate overflow-x-clip px-5 py-[60px] md:px-8"
-      style={{
-        background: `
-          radial-gradient(ellipse 70% 55% at 50% 45%, rgba(127, 119, 221, 0.06) 0%, transparent 55%),
-          ${QUOTE_BG}
-        `,
-      }}
-    >
-      <ParticleField particles={mobile ? PARTICLES_MOBILE : PARTICLES_DESKTOP} />
-
+    <section id="quote-break" className="relative overflow-hidden" style={{ background: BG }}>
       <div
-        className="pointer-events-none absolute left-6 top-8 hidden h-px w-[120px] origin-left rotate-[35deg] md:block"
-        style={{ background: "rgba(232,168,56,0.2)" }}
-        aria-hidden
-      />
-      <div
-        className="pointer-events-none absolute bottom-10 right-6 hidden h-px w-[120px] origin-right rotate-[35deg] md:block"
-        style={{ background: "rgba(127,119,221,0.2)" }}
-        aria-hidden
+        className="pointer-events-none absolute inset-0 opacity-[0.2]"
+        style={{
+          backgroundImage:
+            "linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px)",
+          backgroundSize: "64px 64px",
+          maskImage: "radial-gradient(ellipse 70% 60% at 50% 40%, black, transparent)",
+          WebkitMaskImage: "radial-gradient(ellipse 70% 60% at 50% 40%, black, transparent)",
+        }}
       />
 
-      <div className="relative z-10 mx-auto max-w-[900px] text-center">
-        <p className="font-sans text-[32px] font-extrabold leading-[1.1] tracking-[-0.02em] text-white md:text-[54px]">
-          {words.map((w, i) => {
-            const cfg = tierConfig[w.tier];
-            const delaySec = delaysMs[i]! / 1000;
-            const y0 = mobile ? (w.tier === 1 ? cfg.yMobile : w.tier === 2 ? cfg.yMobile : cfg.yMobile) : w.tier === 1 ? cfg.yDesktop : w.tier === 2 ? cfg.yDesktop : cfg.yDesktop;
-            const showBr = i > 0 && words[i - 1]!.line === 1 && w.line === 2;
+      <div className="relative z-10 mx-auto w-full max-w-[1400px] px-6 py-24 md:px-12 lg:py-28">
+        <SectionHeader
+          number="06"
+          eyebrow="What we stand for"
+          title={
+            <>
+              Three principles<br />
+              that decide every feature.
+            </>
+          }
+          subtitle="We made a bet that the next 10 million companies running AI agents will not be staffed by AI engineers. These principles keep us honest to that bet."
+          tone="dark"
+          accent="#F59E0B"
+        />
 
-            const inner =
-              w.highlight === "gold" ? (
-                <PillGold>{w.text}</PillGold>
-              ) : w.highlight === "purple" ? (
-                <PillPurple>{w.text}</PillPurple>
-              ) : (
-                <span style={w.color ? { color: w.color } : undefined}>{w.text}</span>
-              );
+        <div className="mt-16 grid gap-5 md:grid-cols-3 md:gap-6">
+          {principles.map((p, i) => (
+            <motion.figure
+              key={p.num}
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-8%" }}
+              transition={{ duration: 0.55, ease: E, delay: i * 0.08 }}
+              className="relative flex flex-col rounded-2xl p-6"
+              style={{
+                background: "rgba(255,255,255,0.025)",
+                border: "1px solid rgba(255,255,255,0.08)",
+              }}
+            >
+              <div className="mb-4 flex items-baseline gap-3">
+                <span className="font-mono text-[28px] font-extrabold tracking-tight" style={{ color: p.accent }}>
+                  {p.num}
+                </span>
+                <span className="h-px flex-1 self-center" style={{ background: "rgba(255,255,255,0.12)" }} />
+              </div>
 
-            if (reduceMotion) {
-              return (
-                <React.Fragment key={`${w.text}-${i}`}>
-                  {showBr ? <br /> : null}
-                  <span className={cn("mr-[0.3em] inline-block", w.tier === 1 && "opacity-70")}>{inner}</span>
-                </React.Fragment>
-              );
-            }
+              <h3 className="text-[20px] font-bold leading-[1.2] tracking-[-0.01em] text-white">
+                {p.headline}
+              </h3>
+              <p className="mt-3 text-[14px] leading-[1.65] text-white/65">{p.body}</p>
 
-            return (
-              <React.Fragment key={`${w.text}-${i}`}>
-                {showBr ? <br className="block" /> : null}
-                <motion.span
-                  className="mr-[0.3em] inline-block align-top"
-                  initial={{ y: y0, opacity: 0, scale: cfg.scaleFrom }}
-                  whileInView={{ y: 0, opacity: cfg.opacityTo, scale: cfg.scaleTo }}
-                  viewport={{ once: true, margin: "-12% 0px -12% 0px" }}
-                  transition={{
-                    ...cfg.spring,
-                    delay: delaySec,
-                  }}
-                >
-                  {inner}
-                </motion.span>
-              </React.Fragment>
-            );
-          })}
-        </p>
-
-        <motion.div
-          className="mx-auto mt-5 flex flex-col items-center"
-          initial={{ opacity: 0, scale: 0.95 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true, margin: "-8%" }}
-          transition={{
-            opacity: {
-              duration: reduceMotion ? 0 : 0.15,
-              delay: reduceMotion ? 0 : attributionDelaySec,
-            },
-            scale: {
-              duration: reduceMotion ? 0 : 0.15,
-              delay: reduceMotion ? 0 : attributionDelaySec,
-            },
-          }}
-        >
-          <div className="mb-4 h-px w-[60px] bg-[rgba(255,255,255,0.15)]" aria-hidden />
-          <p className="text-[13px] font-medium tracking-[0.1em] text-[#6B7280]">ATLAS SYNAPSE</p>
-        </motion.div>
+              <p className="mt-5 border-t pt-4 text-[12px] leading-[1.55] text-white/45"
+                style={{ borderColor: "rgba(255,255,255,0.08)" }}>
+                {p.detail}
+              </p>
+            </motion.figure>
+          ))}
+        </div>
       </div>
     </section>
   );

@@ -162,6 +162,7 @@ interface Comparison {
   paneColor: string;
   borderColor: string;
   leftType: "json" | "dashboard" | "slack";
+  preNote?: string;
   us: string;
   context: string;
 }
@@ -180,6 +181,7 @@ const comparisons: Comparison[] = [
     paneColor: "rgba(245,158,11,0.08)",
     borderColor: "rgba(245,158,11,0.22)",
     leftType: "dashboard",
+    preNote: "AI tools charge by 'tokens', a unit most business owners have never heard of. We convert that into actual dollars and actual ROI.",
     us: "You're spending $1,847/mo on 5 agents. Your scheduling assistant ($286/mo) saves you $2,289 (great ROI). But your legal research agent ($421/mo) caused $560 in error corrections, and it's costing more than it's worth.",
     context: "Token counts don't pay the bills. ROI does.",
   },
@@ -189,7 +191,7 @@ const comparisons: Comparison[] = [
     borderColor: "rgba(248,113,113,0.22)",
     leftType: "slack",
     us: 'Email to you at 2:15pm: "Your legal research agent cited a court case that doesn\'t exist: Williams v. State (2021). Flagged as critical. The client received this 4 minutes ago."',
-    context: "You find out in seconds. Not sprints.",
+    context: "Most tools tell your tech team. We tell you, immediately, so you can act before the client notices.",
   },
 ];
 
@@ -204,6 +206,9 @@ function ComparisonPanel({ comp }: { comp: Comparison }) {
       <div className="absolute bottom-0 left-0 top-0 w-[3px]" style={{ background: `linear-gradient(180deg, ${comp.borderColor}, transparent)` }} />
       <div className="p-4 lg:p-5">
         <p className="mb-3 text-[12px] font-extrabold uppercase tracking-[0.1em] text-[#F59E0B]">{comp.title}</p>
+        {comp.preNote && (
+          <p className="mb-3 max-w-[560px] text-[13px] italic leading-relaxed text-[#E8D5F5]/45">{comp.preNote}</p>
+        )}
         <div className="grid items-start gap-3 md:grid-cols-[1fr_40px_1fr]">
           <motion.div
             initial={{ opacity: 0, x: -16 }}
@@ -253,12 +258,19 @@ export function DifferentiatorsSection() {
           viewport={{ once: true }}
           transition={{ duration: 0.5, ease: E }}
         >
-          <p className="text-[14px] font-extrabold uppercase tracking-[0.12em] text-[#F59E0B]">Why we&apos;re different</p>
-          <h2 className="mt-2 text-[40px] font-extrabold tracking-[-0.02em] text-white md:text-[56px] lg:text-[64px]">
-            Current tools? Built by <span className="text-[#F87171]">engineers</span>,<br />for <span className="text-[#F87171]">engineers</span>.
+          <div className="flex items-center gap-4">
+            <span className="font-mono text-[14px] font-bold tracking-[0.14em] text-[#F59E0B]">04</span>
+            <span className="h-px w-20 bg-white/15" />
+            <span className="font-mono text-[12px] font-semibold uppercase tracking-[0.18em] text-white/50">
+              Built differently
+            </span>
+          </div>
+          <h2 className="mt-5 text-[44px] font-extrabold leading-[1.02] tracking-[-0.035em] text-white md:text-[64px] lg:text-[80px]">
+            Other tools were built for <span className="text-[#F87171]">engineers</span>.<br />
+            We built this for <span className="text-[#F59E0B]">you</span>.
           </h2>
-          <p className="mt-3 max-w-[640px] text-[18px] leading-[1.6] text-[#E8D5F5]/60 md:text-[20px]">
-            We&apos;re <span className="font-bold text-[#F59E0B]">business owners</span> who built this for <span className="font-bold text-[#F59E0B]">business owners</span>. Every screen, every alert, and every number is designed so you can <span className="font-bold text-white">act on it immediately</span>.
+          <p className="mt-5 max-w-[640px] text-[18px] leading-[1.6] text-white/60 md:text-[20px]">
+            Every other monitoring tool speaks code. <span className="font-bold text-white">We speak business.</span>
           </p>
         </motion.div>
         <div className="mt-8 flex flex-col gap-3">

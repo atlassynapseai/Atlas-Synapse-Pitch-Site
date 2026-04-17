@@ -12,9 +12,10 @@ export const LANDING = {
   problem: {
     solid: "#FAF8F5",
   },
-  /** Cool deep navy */
+  /** Light cream — alternates with adjacent dark sections */
   how: {
-    solid: "#0A101E",
+    solid: "#F5F1EA",
+    gradient: "linear-gradient(180deg, #F5F1EA 0%, #EFE8DD 100%)",
   },
   sneak: {
     /** Cool mist: light pane between dark “How” and dark “Why we’re different” */
@@ -22,8 +23,9 @@ export const LANDING = {
     edge: "#E8EDF6",
   },
   differentiators: {
-    gradient: "linear-gradient(180deg, #0A0E17 0%, #0D1118 50%, #0A0E17 100%)",
-    edge: "#0A0E17",
+    /** Warm dark — distinct hue from cool navy 'how' section, gives visual separation */
+    gradient: "linear-gradient(180deg, #1F1830 0%, #261D3A 50%, #1F1830 100%)",
+    edge: "#1F1830",
   },
   waitlist: {
     gradient: "linear-gradient(180deg, #080818 0%, #1C1658 100%)",

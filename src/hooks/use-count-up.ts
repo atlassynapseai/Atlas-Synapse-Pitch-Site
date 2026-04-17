@@ -7,7 +7,7 @@ function easeOutExpo(t: number): number {
 }
 
 export function useCountUp(target: number, duration = 1400) {
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = React.useState(target);
   const [started, setStarted] = React.useState(false);
   const ref = React.useRef<HTMLSpanElement>(null);
 
@@ -25,6 +25,7 @@ export function useCountUp(target: number, duration = 1400) {
 
   React.useEffect(() => {
     if (!started) return;
+    setValue(0);
     const start = performance.now();
     let frame: number;
     const tick = (now: number) => {

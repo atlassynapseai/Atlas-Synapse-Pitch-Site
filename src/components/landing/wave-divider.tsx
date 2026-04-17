@@ -109,6 +109,64 @@ export function WaveHowToSneak() {
   );
 }
 
+/** WhereWeFit (dark #0A0E17) → HowItWorks (dark navy #0A101E): subtle dark-to-dark diagonal */
+export function WaveWhereWeFitToHow() {
+  const top = LANDING.differentiators.edge;
+  const fill = LANDING.how.solid;
+  return (
+    <div style={{ background: top, lineHeight: 0, marginBottom: -1 }}>
+      <svg viewBox="0 0 1440 48" preserveAspectRatio="none" style={{ display: "block", width: "100%", height: 40 }}>
+        <path d="M0,40 L1440,8 L1440,48 L0,48 Z" fill={fill} />
+        <path d="M0,40 Q720,16 1440,8" fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="1" strokeLinecap="round" vectorEffect="non-scaling-stroke" />
+      </svg>
+    </div>
+  );
+}
+
+/** HowItWorks (dark navy #0A101E) → Differentiators (dark #0A0E17): subtle dark-to-dark */
+export function WaveHowToDiff() {
+  const top = LANDING.how.solid;
+  const fill = LANDING.differentiators.edge;
+  return (
+    <div style={{ background: top, lineHeight: 0, marginBottom: -1 }}>
+      <svg viewBox="0 0 1440 48" preserveAspectRatio="none" style={{ display: "block", width: "100%", height: 40 }}>
+        <path d="M0,8 L1440,40 L1440,48 L0,48 Z" fill={fill} />
+        <path d="M0,8 Q720,28 1440,40" fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="1" strokeLinecap="round" vectorEffect="non-scaling-stroke" />
+      </svg>
+    </div>
+  );
+}
+
+/** Differentiators (dark) → SneakPeek (light mist): reverse of WaveSneakToDifferentiators */
+export function WaveDiffToSneak() {
+  const top = LANDING.differentiators.edge;
+  const fill = LANDING.sneak.edge;
+  return (
+    <FunkyWave
+      topBg={top}
+      bottomFill={fill}
+      variant={2}
+      height={76}
+      scribbleStroke="rgba(186,230,253,0.16)"
+    />
+  );
+}
+
+/** SneakPeek (light mist #E8EDF6) → QuoteBreak (dark charcoal #1A1520) */
+export function WaveSneakToQuote() {
+  const top = LANDING.sneak.edge;
+  const fill = "#1A1520";
+  return (
+    <FunkyWave
+      topBg={top}
+      bottomFill={fill}
+      variant={4}
+      height={76}
+      scribbleStroke="rgba(45,27,105,0.16)"
+    />
+  );
+}
+
 /** Product preview (light) → Why we’re different (dark): diagonal slash (not a wave) */
 export function WaveSneakToDifferentiators() {
   const top = LANDING.sneak.edge;

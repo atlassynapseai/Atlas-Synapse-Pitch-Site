@@ -26,24 +26,37 @@ export function WaitlistSection() {
       </svg>
       <div className="pointer-events-none absolute inset-0" style={{ background: "radial-gradient(ellipse 60% 50% at 50% 50%, rgba(129,140,248,0.08) 0%, transparent 70%)" }} />
 
-      <div className="relative z-10 mx-auto w-full max-w-[520px] text-center">
-        <motion.h2 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, ease: E }}
-          className="text-[28px] font-extrabold tracking-[-0.02em] text-white md:text-[40px]">
-          Your AI agents are running unsupervised <span className="italic text-[#A78BFA]">right now.</span>
-        </motion.h2>
-        <motion.p initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.1 }}
-          className="mt-3 text-[16px] text-[#E8D5F5]/50">
-          Join the founding beta. Be the first to see what they&apos;re actually doing.
-        </motion.p>
-
-        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.2 }} className="mt-8">
-          <WaitlistSignupForm skin="dark" />
+      <div className="relative z-10 mx-auto w-full max-w-[600px]">
+        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, ease: E }}
+          className="text-center">
+          <h2 className="text-[28px] font-extrabold tracking-[-0.02em] text-white md:text-[40px]">
+            Your AI agents are running unsupervised <span className="italic text-[#A78BFA]">right now.</span>
+          </h2>
+          <p className="mt-3 text-[16px] text-[#E8D5F5]/50">
+            Join 200+ business owners already on the list. We&apos;ll tell you the moment we launch.
+          </p>
         </motion.div>
 
-        <motion.p initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ delay: 0.4 }}
-          className="mt-8 text-[11px] text-[#E8D5F5]/30">
-          Backed by CMU Swartz Center for Entrepreneurship
-        </motion.p>
+        {/* Primary: Waitlist track */}
+        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.15 }}
+          className="mt-8 rounded-2xl border border-[#818CF8]/15 bg-white/[0.04] p-6">
+          <p className="mb-4 text-[13px] font-semibold uppercase tracking-[0.08em] text-[#818CF8]/60">Join the Waitlist</p>
+          <WaitlistSignupForm skin="dark" />
+          <p className="mt-3 text-center text-[11px] text-[#E8D5F5]/25">No spam. Just one email when we go live.</p>
+        </motion.div>
+
+        {/* Secondary: Beta Tester track */}
+        <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.28 }}
+          className="mt-4 flex flex-col items-center gap-3 rounded-2xl border border-[#F59E0B]/15 bg-[#F59E0B]/[0.04] p-5 text-center">
+          <p className="text-[15px] font-semibold text-[#F59E0B]">Want hands-on early access?</p>
+          <p className="text-[14px] leading-relaxed text-[#E8D5F5]/50">
+            Apply to become a founding beta tester. Limited spots. Beta testers get one-on-one onboarding and help shape the product.
+          </p>
+          <a href="/priority-access"
+            className="mt-1 inline-flex items-center gap-2 rounded-[10px] border border-[#F59E0B]/35 bg-[#F59E0B]/10 px-6 py-2.5 text-[14px] font-bold text-[#F59E0B] transition-colors hover:bg-[#F59E0B]/20">
+            Apply to Beta Test →
+          </a>
+        </motion.div>
       </div>
     </section>
   );

@@ -9,16 +9,18 @@ import { HeroSection } from "./hero-section";
 import {
   WaveDarkToLight,
   WaveProblemToHow,
-  WaveHowToSneak,
-  WaveSneakToDifferentiators,
-  WaveDifferentiatorsToQuote,
+  WaveWhereWeFitToHow,
+  WaveHowToDiff,
+  WaveDiffToSneak,
+  WaveSneakToQuote,
   WaveQuoteToWaitlist,
   WaveWaitlistToFooter,
 } from "./wave-divider";
 import { ProblemSection } from "./problem-section";
+import { WhereWeFitSection } from "./where-we-fit-section";
 import { HowItWorksSection } from "./how-it-works-section";
-import { SneakPeekSection } from "./sneak-peek-section";
 import { DifferentiatorsSection } from "./differentiators-section";
+import { SneakPeekSection } from "./sneak-peek-section";
 import { QuoteBreakSection } from "./quote-break-section";
 import { WaitlistSection } from "./waitlist-section";
 import { Footer } from "./footer";
@@ -36,12 +38,14 @@ export function LandingPage() {
       <WaveDarkToLight />
       <ProblemSection />
       <WaveProblemToHow />
+      <WhereWeFitSection />
+      <WaveWhereWeFitToHow />
       <HowItWorksSection />
-      <WaveHowToSneak />
-      <SneakPeekSection />
-      <WaveSneakToDifferentiators />
+      <WaveHowToDiff />
       <DifferentiatorsSection />
-      <WaveDifferentiatorsToQuote />
+      <WaveDiffToSneak />
+      <SneakPeekSection />
+      <WaveSneakToQuote />
       <QuoteBreakSection />
       <WaveQuoteToWaitlist />
       <WaitlistSection />

@@ -36,11 +36,20 @@ export function ProblemSection() {
 
       <div className="relative mx-auto w-full max-w-[1400px]">
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, ease: E }}>
-          <p className="text-[13px] font-extrabold uppercase tracking-[0.12em] text-[#2D1B69]/60">The problem</p>
-          <h2 className="mt-2 text-[36px] font-extrabold tracking-[-0.02em] text-[#1B1464] md:text-[50px] lg:text-[56px]">
-            The <span className="text-[#F59E0B]">$47 billion</span> blind spot
+          <div className="flex items-center gap-4">
+            <span className="font-mono text-[14px] font-bold tracking-[0.14em] text-[#F59E0B]">01</span>
+            <span className="h-px w-20 bg-[#2D1B69]/20" />
+            <span className="font-mono text-[12px] font-semibold uppercase tracking-[0.18em] text-[#2D1B69]/50">
+              The problem
+            </span>
+          </div>
+          <h2 className="mt-5 text-[44px] font-extrabold leading-[1.02] tracking-[-0.035em] text-[#1B1464] md:text-[64px] lg:text-[80px]">
+            The <span className="text-[#F59E0B]">$47 billion</span><br />
+            blind spot.
           </h2>
-          <p className="mt-2 max-w-[500px] text-[16px] text-[#2D1B69]/50">Companies are pouring money into AI agents. Nobody is checking if they actually work.</p>
+          <p className="mt-5 max-w-[540px] text-[18px] leading-[1.55] text-[#2D1B69]/55">
+            Companies are pouring money into AI agents. Nobody is checking if they actually work.
+          </p>
         </motion.div>
 
         <div className="mt-8 grid gap-4 md:mt-10 md:grid-cols-3">
@@ -49,10 +58,26 @@ export function ProblemSection() {
           <Stat target={20} suffix="+" label="monitoring tools exist, all built for engineers, none for business owners" direction="right" delay={0.24} />
         </div>
 
-        <motion.p initial={{ opacity: 0, y: 12 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.4 }}
-          className="mx-auto mt-8 max-w-[600px] text-center text-[17px] italic leading-relaxed text-[#2D1B69]/50">
-          The market for AI agents is <span className="font-bold text-[#1B1464]">$7.6B today</span>, growing to <span className="font-bold text-[#F59E0B]">$47B by 2030</span>. Nobody is watching what they do after deployment.
-        </motion.p>
+        <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.38 }}
+          className="mt-10 grid gap-4 border-t border-[#2D1B69]/10 pt-8 md:grid-cols-2 md:gap-6">
+          <div>
+            <p className="text-[17px] leading-[1.75] text-[#2D1B69]/70">
+              Your AI agent told a client the wrong refund window. Your legal bot cited a case that doesn&apos;t exist. Your sales assistant quoted a price that expired last quarter.
+            </p>
+            <p className="mt-3 text-[17px] leading-[1.75] text-[#2D1B69]/70">
+              Nobody flagged any of it, because nobody was watching.
+            </p>
+          </div>
+          <div className="flex flex-col justify-center rounded-2xl border border-[#2D1B69]/08 bg-white/40 p-5">
+            <p className="text-[14px] font-semibold uppercase tracking-[0.08em] text-[#2D1B69]/40">The market reality</p>
+            <p className="mt-2 text-[17px] leading-relaxed text-[#2D1B69]/70">
+              The AI agent market is{" "}
+              <span className="font-bold text-[#1B1464]">$7.6B today</span>, growing to{" "}
+              <span className="font-bold text-[#F59E0B]">$47B by 2030</span>. The tools to monitor it are all built for engineers.{" "}
+              <span className="font-semibold text-[#1B1464]">These aren&apos;t edge cases. They&apos;re what happens when AI runs without oversight.</span>
+            </p>
+          </div>
+        </motion.div>
       </div>
     </section>
   );
