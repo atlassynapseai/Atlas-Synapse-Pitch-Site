@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/Atlas-Synapse-CRM/:path*",
+      "destination": "https://atlas-synapse-crm.vercel.app/:path*"
+    }
+  ]
+}
