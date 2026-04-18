@@ -1,6 +1,14 @@
 {
   "rewrites": [
     {
+      "source": "/MVP",
+      "destination": "https://atlas-synapse-nine.vercel.app"
+    },
+    {
+      "source": "/MVP/:path*",
+      "destination": "https://atlas-synapse-nine.vercel.app/:path*"
+    },
+    {
       "source": "/Atlas-Synapse-CRM/:path*",
       "destination": "https://atlas-synapse-crm.vercel.app/:path*"
     }
