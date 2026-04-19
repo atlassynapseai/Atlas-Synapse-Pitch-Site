@@ -2,11 +2,11 @@
   "rewrites": [
     {
       "source": "/MVP",
-      "destination": "https://atlas-synapse-nine.vercel.app"
+      "destination": "https://atlas-synapse-nine.vercel.app/MVP"
     },
     {
       "source": "/MVP/:path*",
-      "destination": "https://atlas-synapse-nine.vercel.app/:path*"
+      "destination": "https://atlas-synapse-nine.vercel.app/MVP/:path*"
     },
     {
       "source": "/Atlas-Synapse-CRM/:path*",
