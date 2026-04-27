@@ -261,9 +261,7 @@ export async function POST(req: Request) {
 
               <!-- Message -->
               <p style="margin:0 0 16px;font-size:16px;line-height:1.7;color:#D4C9F0;">
-                We&rsquo;ve received your request and will be reaching out within
-                <strong style="color:#FFFFFF;background-color:#2D1B69;padding:2px 8px;border-radius:6px;">48 hours</strong>
-                to schedule a quick 15&ndash;30 minute call, because right now, your AI agents are running unsupervised and nobody is watching.
+                We&rsquo;ve received your request and will be reaching out soon to schedule a quick 15&ndash;30 minute call, because right now, your AI agents are running unsupervised and nobody is watching.
               </p>
               <p style="margin:0 0 24px;font-size:16px;line-height:1.7;color:#D4C9F0;">
                 Atlas Synapse is the HR department for your AI. Performance reviews, silent failure detection, real ROI &mdash; all in plain English, built for business owners like you.
