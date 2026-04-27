@@ -341,7 +341,7 @@ function buildConfirmationEmail(name: string, email: string): string {
         <ul class="steps">
           <li>
             <span class="step-dot">1</span>
-            <span>We review applications in batches — you'll hear from us within a few days.</span>
+            <span>You'll hear from us soon, so keep a lookout.</span>
           </li>
           <li>
             <span class="step-dot">2</span>

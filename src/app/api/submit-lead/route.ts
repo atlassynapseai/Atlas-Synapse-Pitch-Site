@@ -242,7 +242,7 @@ export async function POST(req: Request) {
               <!-- Logo -->
               <img src="https://atlassynapseai.com/logo.png" alt="Atlas Synapse" width="64" height="64" style="display:block;margin:0 auto 20px;border-radius:14px;" />
               <h1 style="margin:0 0 6px;font-size:30px;font-weight:900;color:#FFFFFF;letter-spacing:-0.5px;line-height:1.2;">
-                You&rsquo;re in the queue,<br /><span style="color:#A78BFA;">${firstName}.</span>
+                ${firstName}, you just secured your spot<br /><span style="color:#A78BFA;">before everyone else.</span>
               </h1>
               <p style="margin:12px 0 0;font-size:14px;color:#C4B5FD;letter-spacing:0.5px;text-transform:uppercase;font-weight:600;">
                 Priority Access &mdash; Atlas Synapse
@@ -260,10 +260,19 @@ export async function POST(req: Request) {
             <td style="background-color:#12103A;padding:36px 40px;">
 
               <!-- Message -->
+              <p style="margin:0 0 16px;font-size:16px;line-height:1.7;color:#D4C9F0;">
+                We&rsquo;ve received your request and will be reaching out within
+                <strong style="color:#FFFFFF;background-color:#2D1B69;padding:2px 8px;border-radius:6px;">48 hours</strong>
+                to schedule a quick 15&ndash;30 minute call, because right now, your AI agents are running unsupervised and nobody is watching.
+              </p>
               <p style="margin:0 0 24px;font-size:16px;line-height:1.7;color:#D4C9F0;">
-                Thanks for applying — we&rsquo;re reviewing priority access on a rolling basis and will reach out within
-                <strong style="color:#FFFFFF;background-color:#2D1B69;padding:2px 8px;border-radius:6px;">24 hours</strong>
-                to schedule a quick call.
+                Atlas Synapse is the HR department for your AI. Performance reviews, silent failure detection, real ROI &mdash; all in plain English, built for business owners like you.
+              </p>
+              <p style="margin:0 0 24px;font-size:16px;line-height:1.7;color:#D4C9F0;">
+                Your competitors won&rsquo;t know what hit them.
+              </p>
+              <p style="margin:0 0 24px;font-size:16px;line-height:1.7;color:#C4B5FD;font-weight:600;">
+                Stay tuned. You&rsquo;ll hear from us soon!
               </p>
 
               <!-- Divider -->
