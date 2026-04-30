@@ -112,6 +112,13 @@ export function HeroSection() {
               Get notified at launch
             </MagneticButton>
             <MagneticButton
+              href="https://atlassynapseai.com/MVP/demo"
+              className="rounded-[12px] border px-9 py-[18px] text-[15px] font-bold text-white/85 transition-colors hover:bg-white/[0.04]"
+              style={{ borderColor: "rgba(255,255,255,0.18)" }}
+            >
+              See live walkthrough &rarr;
+            </MagneticButton>
+            <MagneticButton
               href="/priority-access"
               className="rounded-[12px] border px-9 py-[18px] text-[15px] font-bold text-white/85 transition-colors hover:bg-white/[0.04]"
               style={{ borderColor: "rgba(255,255,255,0.18)" }}
